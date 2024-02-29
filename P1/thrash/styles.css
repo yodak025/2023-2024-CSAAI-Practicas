@@ -1,17 +1,4 @@
-body {
-    margin: 0;
-    padding: 5%;
-    background-image: url('background.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
+
 
 .container{
     color: white;
@@ -59,7 +46,7 @@ body {
 li.link {
     color: blue;
     cursor: pointer;
-    font-family: 'Times New Roman', sans-serif;
+    
 }
 
 li.underline {
