@@ -1,0 +1,42 @@
+body {
+    margin: 0; /* Elimina los márgenes predeterminados del cuerpo */
+    padding: 0; /* Elimina el relleno predeterminado del cuerpo */
+  }
+
+.container{
+    width: 100%;
+    height: 100%;
+    background-image: url('background.jpeg'); /* Reemplaza 'ruta/de/la/imagen.jpg' con la ruta de tu imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir completamente el contenedor */
+    background-position: center; /* Alinea la imagen en el centro del contenedor */
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    height: 100vh; /* Establece la altura al 100% del viewport (altura de la pantalla) */
+    overflow: hidden; /* Evita la barra de desplazamiento vertical si es necesario */
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    color: white; /* Ajusta el color del texto para que sea legible sobre la imagen */
+}
+
+.canvas{
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+li.link {
+    color: blue;
+    cursor: pointer;
+}
+
+li.underline {
+    text-decoration: underline;
+}
