@@ -29,11 +29,12 @@ min-height: 500px;
 }
 
 .izquierda {
-width: 25%;
+
+width: 35%;
 }
 
 .derecha {
-width: 75%;
+width: 65%;
 }
 
 /* Clear floats despues de las columnas para eliminar la superposición */
@@ -44,23 +45,20 @@ clear: both;
 }
 
 #c1 {
-    background-color:#aaa;
+    background-color:rgba(0, 0, 0, 0.25);
 }
 
 #c2 {
-    background-color:#bbb;
+    background-color:rgba(0, 0, 0, 0.15);
 }
 
 /* estilos para imágenes https://www.w3schools.com/css/css3_images.asp */
 /* posicionamiento de imágenes https://www.w3schools.com/css/css_positioning.asp */
 
-img {
-    width: 100%;
-    height: auto;
-}
+
 
 .iresponsive {
-    padding: 0 6px;
+
     float: left;
     width: 50%;
   }
@@ -104,7 +102,7 @@ img {
 
 
 li.link {
-    color: blue;
+    color: rgb(238, 221, 195);
     cursor: pointer;
     
 }
@@ -113,6 +111,20 @@ li.underline {
     text-decoration: underline;
 }
 
+#python {
+  margin: 0;
+  background-image: url('python.jpg');
+  background-size: contain;
+  width: 60%;
+}
+
+.secret{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+  
+}
 
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
 /* Así conseguimos que el contenido se vea bien en dispositvos móviles */
@@ -121,10 +133,19 @@ li.underline {
     .columna {
       width: 100%;
     }
+    #python {
+      width: 100%;
+    }  
 
     .iresponsive {
         width: 100%;
     }
+}
+
+@media screen and (min-width: 4000px) {
+    .secret{
+      visibility: visible;
+      }
 }
 
 /* Más sobre diseño web responsive https://www.w3schools.com/css/css_rwd_intro.asp */
