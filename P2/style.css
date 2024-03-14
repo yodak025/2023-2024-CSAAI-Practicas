@@ -1,0 +1,71 @@
+.canvas {
+    width: 40%;
+    margin: 0% auto;
+    padding: 1.5%;
+    border: solid;
+    border-color: black;
+    border-radius: 5%;
+}
+
+.display {
+    border: solid;
+    border-color: blue;
+}
+
+.key {
+    border: double;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1%;
+    padding: auto;
+    justify-content: center;
+    
+}
+
+.buttons {
+    margin: 2%;
+    border: solid;
+    border-color: black;
+    padding: 2%;
+
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1%;
+    padding: auto;
+    justify-content: center;
+
+}
+
+.button {
+    margin: 1%;
+    margin-left: 5%;
+    margin-right: 2%;
+    border: solid;
+    border-radius: 90%;
+    width: 20%;
+    float: left;
+    text-align: center;
+
+}
+
+.digit{
+    margin: 1%;
+    margin-left: 5%;
+    margin-right: 2%;
+    border: solid;
+
+    width: 10%;
+    float: left;
+    text-align: center;
+}
+
+.chrono{
+    display: flex;
+    flex-wrap: wrap;
+    border:solid;
+    margin: 20%;
+    justify-content: center;
+}
