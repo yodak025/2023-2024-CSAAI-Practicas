@@ -1,5 +1,13 @@
+
+body {
+    background-color: #7c7c7c;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
 .canvas {
-    width: 40%;
+    background-color: #303030;
+    width: 25%;
     margin: 0% auto;
     padding: 1.5%;
     border: solid;
@@ -8,8 +16,9 @@
 }
 
 .display {
+    background-color: #029f63;
     border: solid;
-    border-color: blue;
+    border-color: rgb(0, 0, 0);
 }
 
 .key {
@@ -23,29 +32,29 @@
 }
 
 .buttons {
-    margin: 2%;
+
     border: solid;
-    border-color: black;
-    padding: 2%;
+    border-color: #000000;
+
 
 }
 
 .row {
+    background-color: black;
     display: flex;
     flex-wrap: wrap;
     margin: 1%;
-    padding: auto;
     justify-content: center;
 
 }
 
 .button {
-    margin: 1%;
-    margin-left: 5%;
-    margin-right: 2%;
+    background-color: blue;
+    
     border: solid;
-    border-radius: 90%;
-    width: 20%;
+    border-color: white;
+
+    width: 30%;
     float: left;
     text-align: center;
 
@@ -66,6 +75,6 @@
     display: flex;
     flex-wrap: wrap;
     border:solid;
-    margin: 20%;
+    margin: 10%;
     justify-content: center;
 }
