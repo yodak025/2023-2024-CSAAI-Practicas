@@ -77,6 +77,17 @@ body {
     justify-content: center;
 }
 
+.match{
+    color: green;
+}
+
+.demimatch{
+ color: yellow;
+}
+
+.mistake{
+    color: red;
+}
 
 @media screen and (max-width: 768px) {
    .canvas{

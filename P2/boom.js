@@ -38,8 +38,32 @@ function init() {
     for (let i = 0; i < 10; i++) {
         buttons[i] = document.getElementById(String(i));;
         buttons[i].onclick = () => {
-            input = buttons[i].querySelector("h1").textContent
-            displays[MMG.curr_el].innerHTML = MMG.game(input);
+
+            
+            
+            switch(MMG.game(i)){
+
+                case "*":
+                    displays[MMG.curr_el].innerHTML = "*";
+                    displays[MMG.curr_el].classList.add("mistake");
+                    displays[MMG.curr_el].classList.remove("match");
+                    displays[MMG.curr_el].classList.remove("demimatch");
+                    break;
+
+                case "-":
+                    displays[MMG.curr_el].innerHTML = "-";
+                    displays[MMG.curr_el].classList.add("demimatch");
+                    displays[MMG.curr_el].classList.remove("match");
+                    displays[MMG.curr_el].classList.remove("mistake");
+                    break;
+
+                case "+":
+                    displays[MMG.curr_el].innerHTML = i;
+                    displays[MMG.curr_el].classList.add("match");
+                    displays[MMG.curr_el].classList.remove("mistake");
+                    displays[MMG.curr_el].classList.remove("demimatch");
+                    break;
+            }
             
         }
     }

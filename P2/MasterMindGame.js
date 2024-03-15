@@ -8,7 +8,7 @@ class MasterMind{
         this.KEY = this._random_key()
 
         this.turns = 10
-        this.curr_el = 0
+        this.curr_el = -1
         
 
 
@@ -53,17 +53,18 @@ class MasterMind{
 
     game(symb){
         let num = this._translator(symb)
-        if (this.curr_el == this.LEN) {
+        if (this.curr_el == this.LEN - 1) {
             this.curr_el = -1
             this.turns -= 1
             if (this.turns == 0) {
                 console.alert("Game over")
             } 
 
-        } 
-        if (this._matches(num) == null){
+        }
+        let result = this._matches(num)
+        if (result == null){
             return "*"
-        } else if (this._matches(num) == true){
+        } else if (result == true){
             return "+"
         } else {
             return "-"
