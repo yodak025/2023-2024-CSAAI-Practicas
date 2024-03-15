@@ -15,6 +15,8 @@ body {
     border-radius: 5%;
 }
 
+
+
 .display {
     background-color: #029f63;
     border: solid;
@@ -31,28 +33,24 @@ body {
     
 }
 
-.buttons {
-
-    border: solid;
-    border-color: #000000;
 
 
-}
+
+
 
 .row {
     background-color: black;
     display: flex;
     flex-wrap: wrap;
-    margin: 1%;
     justify-content: center;
 
 }
 
 .button {
-    background-color: blue;
+    background-color: rgb(57, 71, 255);
     
     border: solid;
-    border-color: white;
+    border-color: rgb(0, 0, 0);
 
     width: 30%;
     float: left;
@@ -77,4 +75,18 @@ body {
     border:solid;
     margin: 10%;
     justify-content: center;
+}
+
+
+@media screen and (max-width: 768px) {
+   .canvas{
+        width: 100%;
+    }
+   .digit{
+        width: 15%;
+    }
+   .chrono{
+        margin: 5%;
+    }
+    
 }
