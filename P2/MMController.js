@@ -1,5 +1,6 @@
 class MasterMind {
     constructor(canvas_id) {
+
         this.ctx = this._set_context(canvas_id);
         this.position = new function () {
             this.x = 0.0;
@@ -11,6 +12,7 @@ class MasterMind {
             this.found_left = 0.0;
             this.found_right = 0.0;
         }
+        this.game = new Game(["🔴", "🟢", "🟡", "🔵", "⚫", "⚪"])
 
         this._set_shaders("vertexShader", "fragmentShader");
         this.draw_game();
@@ -64,9 +66,10 @@ class MasterMind {
 
 
 
-    _set_buffer(points, size) {
+    _set_buffer(points, colour, size) {
         let dim = 3;
         var vert = new Float32Array(points);
+        var color = new Float32Array(colour);
 
         var buffer = this.ctx.createBuffer();
         if (!buffer) {
@@ -92,15 +95,25 @@ class MasterMind {
             console.log('Failed to get the storage location of a_PointSize');
             return -1;
         }
-    
+
         this.ctx.uniform1f(gl_PointSize, size);
+
+
+        var gl_FragColor = this.ctx.getUniformLocation(this.ctx.program, "u_color");
+
+        if (gl_FragColor < 0) {
+            console.log('Failed to get the storage location of u_color');
+            return -1;
+        }
+
+        this.ctx.uniform4fv(gl_FragColor, color);
 
         // Return number of vertices
         return vert.length / dim;
     }
 
 
-    draw_box(){
+    draw_box() {
         // Draws the box.
         let box = [
             -0.9, -0.9, 0,
@@ -118,16 +131,16 @@ class MasterMind {
 
         this.ctx.drawArrays(
             this.ctx.LINES, 0,
-            this._set_buffer(box, 30)
+            this._set_buffer(box, [0.0, 0.0, 0.0, 1.0], 30)
         );
-        
+
 
     }
 
-    draw_color(position, size) {
+    draw_color(position, color, size) {
         this.ctx.drawArrays(
             this.ctx.POINTS, 0,
-            this._set_buffer(position, size)
+            this._set_buffer(position, color, size)
         )
     }
 
@@ -141,23 +154,87 @@ class MasterMind {
         // Draws the home.
         this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
         this.draw_box();
-        let turns = 10
-        let sec_len = 4
-        for (let i = 0; i < turns; i++) {
-            for (let j = 0; j < sec_len; j++) {
-                this.draw_color([0.8*(j/2 - 1), 0.8*(i/5 - 1), 0], 10)
+
+        var buttons = [];
+        var colors = [];
+        var answers = [];
+
+        let alph = ["red", "green", "yellow", "blue", "black", "white"]
+        for (let i = 0; i < 6; i++) {
+            buttons[i] = document.getElementById(alph[i]);;
+            buttons[i].onclick = () => {
+
+                let color = []
+                let answer = []
+                let turn_pos = this.game.MAXTURNS - this.game.turns;
+                switch (alph[i]) {
+
+                    case "red":
+                        color = [1.0, 0.0, 0.0, 1.0];
+                        break;
+                    case "green":
+                        color = [0.0, 1.0, 0.0, 1.0];
+                        break;
+                    case "yellow":
+                        color = [1.0, 1.0, 0.0, 1.0];
+                        break;
+                    case "blue":
+                        color = [0.0, 0.0, 1.0, 1.0];
+                        break;
+                    case "black":
+                        color = [0.0, 0.0, 0.0, 1.0];
+                        break;
+                    case "white":
+                        color = [1.0, 1.0, 1.0, 1.0];
+                        break;
+                }
+                
+                switch (this.game.game(this.game.ALPHABET[i])) {
+
+                    case "*":
+                        answer = [0.0, 0.0, 0.0, 1.0];
+                        break;
+
+                    case "-":
+                        answer = [1.0, 0.0, 0.0, 1.0];
+                        break;
+
+                    case "+":
+                        answer = [1.0, 1.0, 1.0, 1.0];
+                        break;
+                }
+
+                colors.push(color);
+                answers.push(answer)
+                this.game.finish()
+                this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
+                this.draw_box();
+
+                for (let i = 0; i < turn_pos; i++) {
+                    for (let j = 0; j < this.game.LEN; j++) {
+                        this.draw_color([0.5 * (j / 2.5 - 1.25), 0.8 * (i / 5 - 1), 0], colors[i*this.game.LEN * j], 10.0)
+                        this.draw_color([0.5 * (j / 4 + 0.5), 0.8 * (i / 5 - 1.01), 0], answers[i*this.game.LEN * j], 4.0)
+                    }
+                }
+                for (let j = 0; j <= this.game.curr_el; j++) {
+                    this.draw_color([0.5 * (j / 2.5 - 1.25), 0.8 * (i / 5 - 1), 0], colors[turn_pos*this.game.LEN * j], 10.0)
+                    this.draw_color([0.5 * (j / 4 + 0.5), 0.8 * (i / 5 - 1.01), 0], answers[turn_pos*this.game.LEN * j], 4.0)
+                }
             }
-
-
+        
+            
+        
         }
 
-        this.draw_color([], 5.0);
+
+        
     }
+
 
 
 }
 function init() {
-    
+
     MM = new MasterMind("Canvas");
 
     MM.draw_game()

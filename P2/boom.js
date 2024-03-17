@@ -25,7 +25,6 @@ function init() {
         chrono.start();
     }
 
-
     stop.onclick = () => {
         chrono.stop();
     }
@@ -64,6 +63,7 @@ function init() {
                     displays[MMG.curr_el].classList.remove("demimatch");
                     break;
             }
+            MMG.finish()
             
         }
     }

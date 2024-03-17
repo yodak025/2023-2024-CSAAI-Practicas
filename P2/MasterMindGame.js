@@ -4,15 +4,13 @@ class Game{
     constructor(alph){
 
         this.ALPHABET = alph
+        this.MAXTURNS = 10
         this.LEN = 4
         this.KEY = this._random_key()
 
-        this.turns = 10
-        this.curr_el = -1
-        
-
-
-
+        this.turns = this.MAXTURNS
+        this.curr_el = 0
+        this.key = this.KEY   
     }
 
     _random_key(){
@@ -24,17 +22,28 @@ class Game{
     }
 
     _matches(num){
-        if (num == this.KEY[this.curr_el]) {
+        if (this.key[this.curr_el] == -1) {
             this.curr_el += 1
+            if (this.curr_el == this.LEN) {
+                this.curr_el = 0
+                this.turns -= 1
+                if (this.turns == 0) {
+                    console.alert("Game over")
+                    return null
+                }
+            }
+            return this._matches();
+        }
+
+        if (num == this.key[this.curr_el]) {
+            this.key[this.curr_el] = -1
             return true
         } else {
             for (let i = 0; i < this.KEY.length; i++) {
                 if (this.KEY[i] == num) {
-                    this.curr_el += 1
                     return false
                 }
             }
-            this.curr_el += 1
             return null
         }
 
@@ -53,11 +62,11 @@ class Game{
 
     game(symb){
         let num = this._translator(symb)
-        if (this.curr_el == this.LEN - 1) {
-            this.curr_el = -1
+        if (this.curr_el == this.LEN) {
+            this.curr_el = 0
             this.turns -= 1
             if (this.turns == 0) {
-                console.alert("Game over")
+                window.alert("Game over")
             } 
 
         }
@@ -71,6 +80,10 @@ class Game{
         }
         
 
+    }
+
+    finish(){
+        this.curr_el += 1
     }
 
 

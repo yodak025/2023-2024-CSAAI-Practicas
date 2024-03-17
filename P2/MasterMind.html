@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MasterMind</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body onload="init()">
 
     <h1>Master Mind Game</h1>
-    <canvas id="Canvas" width="300" height="450"></canvas>
+    <div class="canvas"><canvas id="Canvas" width="300" height="450"></canvas>
+    <div>
+        <button id="red">🔴</button>
+        <button id="green">🟢</button>
+        <button id="yellow">🟡</button>
+        <button id="blue">🔵</button>
+        <button id="black">⚫</button>
+        <button id="white">⚪</button>
+
+    </div></div>
+    
     
 </body>
 
@@ -22,11 +33,14 @@
     </script>
 
 <script id="fragmentShader" , type="x-shader/x-fragment">
+    precision mediump float;
+    uniform vec4 u_color;
     void main() {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        gl_FragColor = u_color;
     }
 </script>
 
 <script src="MMController.js"></script>
+<script src="MasterMindGame.js"></script>
 
 </html>
