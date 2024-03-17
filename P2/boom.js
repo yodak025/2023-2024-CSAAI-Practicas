@@ -5,7 +5,7 @@
 function init() {
     alph = ["0","1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-    var MMG = new MasterMind(alph)
+    var MMG = new Game(alph)
     var chrono = new Crono(document.getElementsByClassName("chrono")[0]);
 
     var buttons = []
