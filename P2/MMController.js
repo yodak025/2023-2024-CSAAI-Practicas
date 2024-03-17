@@ -26,7 +26,7 @@ class MasterMind {
             alert("Unable to initialize WebGL. Your browser or machine may not support it.");
             return;
         }
-        gl.clearColor(1.0, 1.0, 1.0, 1.0);
+        gl.clearColor(0.3, 0.3, 0.3, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         return gl;
     }
@@ -212,13 +212,13 @@ class MasterMind {
 
                 for (let i = 0; i < turn_pos; i++) {
                     for (let j = 0; j < this.game.LEN; j++) {
-                        this.draw_color([0.5 * (j / 2.5 - 1.25), 0.8 * (i / 5 - 1), 0], colors[i*this.game.LEN * j], 10.0)
-                        this.draw_color([0.5 * (j / 4 + 0.5), 0.8 * (i / 5 - 1.01), 0], answers[i*this.game.LEN * j], 4.0)
+                        this.draw_color([0.5 * (j / 2.5 - 1.25), -0.8 * (i / 5 - 1), 0], colors[i*this.game.LEN * j], 10.0)
+                        this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[i*this.game.LEN * j], 4.0)
                     }
                 }
                 for (let j = 0; j <= this.game.curr_el; j++) {
-                    this.draw_color([0.5 * (j / 2.5 - 1.25), 0.8 * (i / 5 - 1), 0], colors[turn_pos*this.game.LEN * j], 10.0)
-                    this.draw_color([0.5 * (j / 4 + 0.5), 0.8 * (i / 5 - 1.01), 0], answers[turn_pos*this.game.LEN * j], 4.0)
+                    this.draw_color([0.5 * (j / 2.5 - 1.25), -0.8 * (i / 5 - 1), 0], colors[turn_pos*this.game.LEN * j], 10.0)
+                    this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[turn_pos*this.game.LEN * j], 4.0)
                 }
             }
         
