@@ -89,6 +89,12 @@ body {
     color: red;
 }
 
+.selected{
+    filter: brightness(100);
+    background-color: rgba(151, 151, 151, 0.2)
+}
+
+
 @media screen and (max-width: 768px) {
    .canvas{
         width: 100%;

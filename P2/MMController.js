@@ -216,7 +216,7 @@ class MasterMind {
                         this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[i*this.game.LEN * j], 4.0)
                     }
                 }
-                for (let j = 0; j <= this.game.curr_el; j++) {
+                for (let j = 0; j < this.game.curr_el; j++) {
                     this.draw_color([0.5 * (j / 2.5 - 1.25), -0.8 * (i / 5 - 1), 0], colors[turn_pos*this.game.LEN * j], 10.0)
                     this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[turn_pos*this.game.LEN * j], 4.0)
                 }

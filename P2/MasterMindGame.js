@@ -22,25 +22,16 @@ class Game{
     }
 
     _matches(num){
-        if (this.key[this.curr_el] == -1) {
-            this.curr_el += 1
-            if (this.curr_el == this.LEN) {
-                this.curr_el = 0
-                this.turns -= 1
-                if (this.turns == 0) {
-                    console.alert("Game over")
-                    return null
-                }
-            }
-            return this._matches();
+        if (this.key[this.curr_el] === -1) {            
+            return -1;
         }
 
-        if (num == this.key[this.curr_el]) {
+        if (num === this.key[this.curr_el]) {
             this.key[this.curr_el] = -1
             return true
         } else {
             for (let i = 0; i < this.KEY.length; i++) {
-                if (this.KEY[i] == num) {
+                if (this.KEY[i] === num) {
                     return false
                 }
             }
@@ -62,21 +53,18 @@ class Game{
 
     game(symb){
         let num = this._translator(symb)
-        if (this.curr_el == this.LEN) {
-            this.curr_el = 0
-            this.turns -= 1
-            if (this.turns == 0) {
-                window.alert("Game over")
-            } 
-
-        }
         let result = this._matches(num)
         if (result == null){
             return "*"
         } else if (result == true){
             return "+"
-        } else {
+        } else if (result == false){
             return "-"
+        } else if (result == -1){
+            return "++"
+        } else {
+            alert("Error in game")
+            return null
         }
         
 
@@ -84,6 +72,14 @@ class Game{
 
     finish(){
         this.curr_el += 1
+        if (this.curr_el == this.LEN) {
+            this.curr_el = 0
+            this.turns -= 1
+            if (this.turns == 0) {
+                window.alert("Game over")
+                return null
+            }
+        }
     }
 
 
