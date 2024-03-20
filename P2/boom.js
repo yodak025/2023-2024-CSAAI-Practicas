@@ -39,22 +39,21 @@ function init() {
 
         buttons[i] = document.getElementById(String(i));;
         buttons[i].onclick = function f(){
-
-            for (i = 0; i < MMG.LEN; i++){
-                if (MMG.curr_el + i - 1 < MMG.LEN) {
-                    if (MMG.key[MMG.curr_el + i]!== -1) {
-                        document.getElementsByClassName("selected")[0].classList.remove("selected");
-                        displays[MMG.curr_el + i].classList.add("selected");
-                        break;
-                    }
-                } else {
-                    if (MMG.key[MMG.curr_el - MMG.LEN + i]!== -1) {
-                        document.getElementsByClassName("selected")[0].classList.remove("selected");
-                        displays[MMG.curr_el - MMG.LEN + i].classList.add("selected");
-                        break;
-                    }
+        let pointer = false
+            for (let j = MMG.curr_el; !pointer; j++){
+                
+                if(j >= MMG.LEN - 1){
+                    j -= MMG.LEN;
+                }
+                if (MMG.key[j + 1] != -1){
+                    document.getElementsByClassName("selected")[0].classList.remove("selected");
+                    displays[j + 1].classList.add("selected");
+                    pointer = true;
+                    break;
                 }
             }
+
+            
             
                 
 
