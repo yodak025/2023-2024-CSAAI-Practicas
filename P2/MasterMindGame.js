@@ -10,7 +10,7 @@ class Game{
 
         this.turns = this.MAXTURNS
         this.curr_el = 0
-        this.key = this.KEY   
+        this.key = this.KEY.slice()   
     }
 
     _random_key(){
@@ -26,12 +26,12 @@ class Game{
             return -1;
         }
 
-        if (num === this.key[this.curr_el]) {
+        if (num === this.KEY[this.curr_el]) {
             this.key[this.curr_el] = -1
             return true
         } else {
             for (let i = 0; i < this.KEY.length; i++) {
-                if (this.KEY[i] === num) {
+                if (this.key[i] === num) {
                     return false
                 }
             }

@@ -196,11 +196,14 @@ class MasterMind {
                         break;
 
                     case "-":
-                        answer = [1.0, 0.0, 0.0, 1.0];
+                        answer = [1.0, 1.0, 1.0, 1.0];
                         break;
 
-                    case "+":
-                        answer = [1.0, 1.0, 1.0, 1.0];
+                    case "+" :
+                        answer = [1.0, 0.0, 0.0, 1.0];
+                        break;
+                    case "++":
+                        answer = [1.0, 0.0, 0.0, 1.0];
                         break;
                 }
 
@@ -210,16 +213,27 @@ class MasterMind {
                 this.ctx.clear(this.ctx.COLOR_BUFFER_BIT);
                 this.draw_box();
 
-                for (let i = 0; i < turn_pos; i++) {
-                    for (let j = 0; j < this.game.LEN; j++) {
-                        this.draw_color([0.5 * (j / 2.5 - 1.25), -0.8 * (i / 5 - 1), 0], colors[i*this.game.LEN * j], 10.0)
-                        this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[i*this.game.LEN * j], 4.0)
+                for (let i = 0; i <= turn_pos; i++) {
+                    for (let j = 0; j < this.game.LEN ; j++) {
+                        this.draw_color([0.5 * (j / 2.5 - 1.25), -0.8 * (i / 5 - 1), 0], colors[i*this.game.LEN  + j], 10.0)
+                        this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[i*this.game.LEN  + j], 4.0)
+                        if (i === turn_pos & j === this.game.curr_el - 1){
+                            break;
+                        }
                     }
                 }
-                for (let j = 0; j < this.game.curr_el; j++) {
-                    this.draw_color([0.5 * (j / 2.5 - 1.25), -0.8 * (i / 5 - 1), 0], colors[turn_pos*this.game.LEN * j], 10.0)
-                    this.draw_color([0.5 * (j / 4 + 0.5), -0.8 * (i / 5 - 1.01), 0], answers[turn_pos*this.game.LEN * j], 4.0)
-                }
+
+
+
+
+
+
+
+
+
+
+
+
             }
         
             
