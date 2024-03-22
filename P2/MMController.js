@@ -2,16 +2,7 @@ class MasterMind {
     constructor(canvas_id) {
 
         this.ctx = this._set_context(canvas_id);
-        this.position = new function () {
-            this.x = 0.0;
-            this.y = 0.0;
-            this.scale = 0.0
-            this.roof_x = 0.0;
-            this.roof_y = 0.0;
-            this.roof_theta = 0.0;
-            this.found_left = 0.0;
-            this.found_right = 0.0;
-        }
+
         this.game = new Game(["🔴", "🟢", "🟡", "🔵", "⚫", "⚪"])
 
         this._set_shaders("vertexShader", "fragmentShader");
@@ -222,6 +213,12 @@ class MasterMind {
                         }
                     }
                 }
+                if (all_el(this.game.key, -1)){
+                    window.alert("¡Has ganado! ¡Felicidades!");
+
+                        window.alert("Puedes volver a jugar introduciendo en el prompt 'MasterMind' al principio de cada partida");
+
+                }
 
 
 
@@ -247,10 +244,20 @@ class MasterMind {
 
 
 }
-function init() {
+function initMM() {
 
     MM = new MasterMind("Canvas");
 
     MM.draw_game()
 
+}
+
+
+function all_el(arr, val) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] != val) {
+            return false
+        }
+    }
+    return true
 }

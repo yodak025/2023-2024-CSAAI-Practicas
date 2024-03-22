@@ -39,7 +39,7 @@ body {
 
 
 .row {
-    background-color: black;
+    background-color: rgb(27, 27, 27);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -92,6 +92,17 @@ body {
 .selected{
     filter: brightness(100);
     background-color: rgba(151, 151, 151, 0.2)
+}
+
+
+
+#fifth_row {
+    border-bottom-left-radius: 8%;
+    border-bottom-right-radius: 8%;
+}
+
+#MMButton {
+    display: none;
 }
 
 
