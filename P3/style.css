@@ -1,0 +1,17 @@
+#canvas {
+    background-image: url('background01.jpg');
+    background-size: 100vw 100vh ;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5px;
+
+    overflow: hidden;
+    position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Esto hace que el ancho sea igual al ancho de la ventana del navegador */
+            height: 100vh; /* Esto hace que la altura sea igual a la altura de la ventana del navegador */
+            z-index: -1;
+
+}
