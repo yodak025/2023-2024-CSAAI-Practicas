@@ -10,7 +10,7 @@ function init() {
     
     screen = new CanvasElement("canvas", "Screen");
     stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [1, 1], 9.81);
-    timer = new TimeScore("canvas", "TimeScore")
+    timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
 
     window.requestAnimationFrame(step);
 }
@@ -21,7 +21,7 @@ function step(i) {
     screen.clear()
     timer.setTime()
     stone.parabol(i/10000)
-    stone.draw()
+    stone.draw("image")
     window.requestAnimationFrame(step);
 
 }
@@ -65,7 +65,7 @@ class CanvasElement {
             case "resize":
                 switch (axis) {
                     case "x":
-                        this._recalc_window_()
+                        
                         return [
                             this._canvas_.width * k / this._RATIO_,
                         ]
@@ -106,24 +106,49 @@ class CanvasElement {
 
     clear(){
         this._ctx_.clearRect(0, 0, this._canvas_.width, this._canvas_.height);
+        this._recalc_window_()
     }
 
-    draw() {
-
-        this._ctx_.beginPath();
-        this._ctx_.drawImage( this.tex, 
-            this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
-            this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
-            this._reaxe_(this._size_.width, "x", "resize"),
-            this._reaxe_(this._size_.height, "y", "resize")
-        );
-
-        this._ctx_.fillStyle = 'blue';
-
-        this._ctx_.fill();
-
-        this._ctx_.stroke();
-        this._ctx_.closePath();
+    draw(type = "rectangle") {
+        switch (type) {
+            case "rectangle":
+                this._ctx_.beginPath();
+    
+                this._ctx_.rect(
+                    this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
+                    this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
+                    this._reaxe_(this._size_.width, "x", "resize"),
+                    this._reaxe_(this._size_.height, "y", "resize"));
+    
+                this._ctx_.fillStyle = 'green';
+    
+                this._ctx_.fill();
+    
+                this._ctx_.stroke();
+    
+    
+                this._ctx_.closePath();
+                this._ctx_.save();
+    
+                break;
+    
+    
+                
+            case "image":
+    
+                this._ctx_.drawImage(this.tex,
+                    this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
+                    this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
+                    this._reaxe_(this._size_.width, "x", "resize"),
+                    this._reaxe_(this._size_.height, "y", "resize")
+                );
+                break;
+        }
+    
+    
+    
+    
+    
     }
 
 
@@ -152,8 +177,8 @@ class TimeScore extends CanvasElement {
 
 
         this._ctx_.fillText(String(this._score_) + "    " + this._time_.disp,
-            this._canvas_.width * (this._position_.x - this._size_.width / 2) / 20,
-            this._canvas_.height * (this._position_.y + this._size_.height / 2) / 10
+        this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
+        this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
         );
 
         this._ctx_.fillStyle = 'blue';
