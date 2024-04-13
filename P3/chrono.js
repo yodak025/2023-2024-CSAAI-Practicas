@@ -3,14 +3,15 @@ class Crono {
 
     //-- Constructor. Hay que indicar el 
     //-- display donde mostrar el cronómetro
-    constructor(display) {
-        this.display = display;
+    constructor() {
 
         //-- Tiempo
         this.cent = 0, //-- Centésimas
         this.seg = 0,  //-- Segundos
         this.min = 0,  //-- Minutos
-        this.timer = 0;  //-- Temporizador asociado
+        this.timer = null;  //-- Temporizador asociado
+
+        this.disp = "0:0:0";
     }
 
     //-- Método que se ejecuta cada centésima
@@ -31,7 +32,7 @@ class Crono {
         }
 
         //-- Mostrar el valor actual
-        this.display.innerHTML = this.min + ":" + this.seg + ":" + this.cent
+        this.disp = this.min + ":" + this.seg + ":" + this.cent
     }
 
     //-- Arrancar el cronómetro
@@ -59,6 +60,6 @@ class Crono {
         this.seg = 0;
         this.min = 0;
 
-        this.display.innerHTML = "0:0:0";
+        this.disp = "0:0:0";
     }
 }

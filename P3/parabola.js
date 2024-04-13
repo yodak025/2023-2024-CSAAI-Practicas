@@ -9,13 +9,19 @@ function init() {
     canvas.height = 500;
 
     stone = new CanvasElement("canvas", null,[10,5,1,1] );
+    timer = new TimeScore("canvas")
 
     window.requestAnimationFrame(step);
 }
 
 function step(i) {
+
+            
+    timer.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    timer.setTime()
     stone.draw()    
     window.requestAnimationFrame(step);
+    
 }
 
 
@@ -38,23 +44,10 @@ class CanvasElement {
         }
 
         this.ctx = this.canvas.getContext("2d");
-        this.draw(10,10,5);
 
-    }
-
-
-    _get_ctx() {
-        return 
     }
 
     draw() {
-
-        this.ctx.beginPath();
-
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
-        this.ctx.closePath();
-
         this.ctx.beginPath();
             this.ctx.rect(
                 this.canvas.width * (this.position.x - this.size.width/2) / 20,
@@ -78,36 +71,37 @@ class CanvasElement {
 }
 
 class TimeScore extends CanvasElement{
-    constructor(canvas_id, id = null, pos = [18,9,1,0.4]) {
+    constructor(canvas_id, id = null, pos = [17,0.5,0,0]) {
         super(canvas_id, id, pos);
-        this.time = new Chrono()
+        this.time = new Crono()
+        this.score = 100;
     }
 
     setTime(){
-        this.ctx.beginPath();
 
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
-        this.ctx.closePath();
         
-        
+        this.time.start()
+
+        this.ctx.font = "23px Arial";
+        this.ctx.fillStyle = 'black'
 
 
 
-        this.ctx.beginPath();
-            this.ctx.fillText("Time: " + this.time,
+            this.ctx.fillText(String(this.score) + "    " + this.time.disp,
                 this.canvas.width * (this.position.x - this.size.width/2) / 20,
-                this.canvas.height * (this.position.y - this.size.height/2) / 10, 
-                this.canvas.width * this.size.width / 20,
-                this.canvas.height * this.size.height / 10 
-                
+                this.canvas.height * (this.position.y + this.size.height/2) / 10 
             );
 
             this.ctx.fillStyle = 'blue';
 
-            this.ctx.fill();
 
-            this.ctx.stroke();
-        this.ctx.closePath();
     }
+}
+
+class OneStone extends CanvasElement {
+    constructor(canvas_id, id = null, pos) {
+        super(canvas_id, id, pos);
+    }
+    
+    
 }
