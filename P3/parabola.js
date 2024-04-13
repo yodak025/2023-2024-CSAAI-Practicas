@@ -1,129 +1,191 @@
 
 function init() {
+
     console.log("Ejecutando JS...");
 
     const canvas = document.getElementById("canvas");
 
-    //-- Definir el tamaño del canvas
-    canvas.width = 1000;
-    canvas.height = 500;
-
-    stone = new OneStone("canvas", null,[0,0,1,1], [10, 10], 9.81 );
-    timer = new TimeScore("canvas")
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    screen = new CanvasElement("canvas", "Screen");
+    stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.1,0.1], [1, 1], 9.81);
+    timer = new TimeScore("canvas", "TimeScore")
 
     window.requestAnimationFrame(step);
 }
 
+
 function step(i) {
 
-            
-    timer.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    screen.clear()
     timer.setTime()
-    stone.parabol(i/1000)
-    stone.draw()    
+    stone.parabol(i/10000)
+    stone.draw()
     window.requestAnimationFrame(step);
-    
+
 }
 
 
 
 class CanvasElement {
-    constructor(canvas_id, id = null, pos) {
-        this._canvas_id = canvas_id;
-        this._id = id;
+    constructor(canvas_id, id = null, pos = [0.5, 0.5, 0.5, 0.5]) {
+        this._RATIO_ = null;
 
-        this.canvas = document.getElementById(this._canvas_id);
+        this._canvas_id_ = canvas_id;
+        this._id_ = id;
 
-        this.position = {
+        this._canvas_ = document.getElementById(this._canvas_id_);
+        this._RATIO_ = this._canvas_.width / this._canvas_.height;
+
+        this._position_ = {
             x: pos[0],
             y: pos[1]
         }
 
-        this.size = {
+        this._size_ = {
             width: pos[2],
             height: pos[3]
         }
 
-        this.ctx = this.canvas.getContext("2d");
+        this._ctx_ = this._canvas_.getContext("2d");
 
+    }
+
+    _recalc_window_() {
+        this._canvas_.width = window.innerWidth;
+        this._canvas_.height = window.innerHeight;
+        this._RATIO_ = this._canvas_.width / this._canvas_.height;
+    }
+
+    _reaxe_(k, axis = "x", type = "default") {
+        switch (type) {
+            case "resize":
+                switch (axis) {
+                    case "x":
+                        this._recalc_window_()
+                        return [
+                            this._canvas_.width * k / this._RATIO_,
+                        ]
+                    case "y":
+                        return [
+                             this._canvas_.height * (k) 
+                        ]
+                }
+
+            case "lb_origin":
+                switch (axis) {
+                    case "x":
+                        return [
+                            this._canvas_.width * (k[0]) - this._reaxe_(k[1]/2, "x", "resize"),
+                        ]
+                    case "y":
+                        return [
+                            this._canvas_.height * (1 - k[0]) - this._reaxe_(k[1]/2, "y", "resize")
+                        ]
+                }
+
+
+            default:
+                switch (axis) {
+                    case "x":
+                        return [
+                            this._canvas_.width * k
+                        ]
+                    case "y":
+                        return [
+                            this._canvas_.height * k
+                        ]
+                }
+        }9
+
+
+    }
+
+    clear(){
+        this._ctx_.clearRect(0, 0, this._canvas_.width, this._canvas_.height);
     }
 
     draw() {
-        this.ctx.beginPath();
-            this.ctx.rect(
-                this.canvas.width * (this.position.x - this.size.width/2) / 20,
-                this.canvas.height * (this.position.y - this.size.height/2) / 10, 
-                this.canvas.width * this.size.width / 20,
-                this.canvas.height * this.size.height / 10 
-                
-            );
 
-            this.ctx.fillStyle = 'blue';
+        this._ctx_.beginPath();
+        this._ctx_.rect(
+            this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
+            this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
+            this._reaxe_(this._size_.width, "x", "resize"),
+            this._reaxe_(this._size_.height, "y", "resize")
+        );
 
-            this.ctx.fill();
+        this._ctx_.fillStyle = 'blue';
 
-            this.ctx.stroke();
-        this.ctx.closePath();
+        this._ctx_.fill();
+
+        this._ctx_.stroke();
+        this._ctx_.closePath();
     }
+
+
 
     colision(other) {
         return false;
     }
 }
 
-class TimeScore extends CanvasElement{
-    constructor(canvas_id, id = null, pos = [17,0.5,0,0]) {
+
+class TimeScore extends CanvasElement {
+    constructor(canvas_id, id = null, pos = [0.5, 0.5, 0, 0]) {
         super(canvas_id, id, pos);
-        this.time = new Crono()
-        this.score = 100;
+        this._time_ = new Crono()
+        this._score_ = 100;
     }
 
-    setTime(){
-
-        
-        this.time.start()
-
-        this.ctx.font = "23px Arial";
-        this.ctx.fillStyle = 'black'
+    setTime() {
 
 
+        this._time_.start()
 
-            this.ctx.fillText(String(this.score) + "    " + this.time.disp,
-                this.canvas.width * (this.position.x - this.size.width/2) / 20,
-                this.canvas.height * (this.position.y + this.size.height/2) / 10 
-            );
+        this._ctx_.font = "23px Arial";
+        this._ctx_.fillStyle = 'black'
 
-            this.ctx.fillStyle = 'blue';
+
+
+        this._ctx_.fillText(String(this._score_) + "    " + this._time_.disp,
+            this._canvas_.width * (this._position_.x - this._size_.width / 2) / 20,
+            this._canvas_.height * (this._position_.y + this._size_.height / 2) / 10
+        );
+
+        this._ctx_.fillStyle = 'blue';
 
 
     }
 }
 
+
 class OneStone extends CanvasElement {
     constructor(canvas_id, id = null, pos, spd, grv) {
         super(canvas_id, id, pos);
 
-        this.position = {
+        this._position_ = {
             x: pos[0],
             y: pos[1],
             x0: pos[0],
             y0: pos[1]
         }
-        this.speed = {
-            vx: spd[0],
-            vy: spd[1]
+        this._speed_ = {
+            x: spd[0],
+            y: spd[1],
+
         }
 
-        this.gravity = -1/2 * grv
+        this._gravity_ = -1 / 2 * grv
     }
-    
-    parabol(t){
-        this.position.x = this.position.x + 1/2*Math.sin(2*Math.PI* t )
-        this.position.y = this.position.y + 1/4*Math.sin(2*Math.PI* t )
 
-        //this.position.x = this.position.x + this.position.vx*t;
-        //this.position.y = this.position.y + this.position.vy*t + this.gravity*t*t;
+    parabol(t) {
+
+        this._position_.x = this._position_.x0 + this._speed_.x * t
+        this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
+
 
     }
-    
+
 }
