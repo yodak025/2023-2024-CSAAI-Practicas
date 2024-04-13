@@ -9,7 +9,7 @@ function init() {
     canvas.height = window.innerHeight;
     
     screen = new CanvasElement("canvas", "Screen");
-    stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.1,0.1], [1, 1], 9.81);
+    stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [1, 1], 9.81);
     timer = new TimeScore("canvas", "TimeScore")
 
     window.requestAnimationFrame(step);
@@ -31,6 +31,8 @@ function step(i) {
 class CanvasElement {
     constructor(canvas_id, id = null, pos = [0.5, 0.5, 0.5, 0.5]) {
         this._RATIO_ = null;
+
+        this.tex = document.getElementById(id);
 
         this._canvas_id_ = canvas_id;
         this._id_ = id;
@@ -109,7 +111,7 @@ class CanvasElement {
     draw() {
 
         this._ctx_.beginPath();
-        this._ctx_.rect(
+        this._ctx_.drawImage( this.tex, 
             this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
             this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
             this._reaxe_(this._size_.width, "x", "resize"),
