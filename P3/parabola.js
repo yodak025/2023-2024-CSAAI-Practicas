@@ -8,7 +8,7 @@ function init() {
     canvas.width = 1000;
     canvas.height = 500;
 
-    stone = new CanvasElement("canvas", null,[10,5,1,1] );
+    stone = new OneStone("canvas", null,[0,0,1,1], [10, 10], 9.81 );
     timer = new TimeScore("canvas")
 
     window.requestAnimationFrame(step);
@@ -19,6 +19,7 @@ function step(i) {
             
     timer.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     timer.setTime()
+    stone.parabol(i/1000)
     stone.draw()    
     window.requestAnimationFrame(step);
     
@@ -99,9 +100,30 @@ class TimeScore extends CanvasElement{
 }
 
 class OneStone extends CanvasElement {
-    constructor(canvas_id, id = null, pos) {
+    constructor(canvas_id, id = null, pos, spd, grv) {
         super(canvas_id, id, pos);
+
+        this.position = {
+            x: pos[0],
+            y: pos[1],
+            x0: pos[0],
+            y0: pos[1]
+        }
+        this.speed = {
+            vx: spd[0],
+            vy: spd[1]
+        }
+
+        this.gravity = -1/2 * grv
     }
     
+    parabol(t){
+        this.position.x = this.position.x + 1/2*Math.sin(2*Math.PI* t )
+        this.position.y = this.position.y + 1/4*Math.sin(2*Math.PI* t )
+
+        //this.position.x = this.position.x + this.position.vx*t;
+        //this.position.y = this.position.y + this.position.vy*t + this.gravity*t*t;
+
+    }
     
 }
