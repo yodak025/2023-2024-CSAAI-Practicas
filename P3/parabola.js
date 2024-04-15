@@ -12,6 +12,10 @@ function init() {
     stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [1, 1], 9.81);
     timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
 
+    bird = new Twobirds("canvas", "Bird0", [0.5, 0.5, 0.1, 0.1]);
+
+
+
     window.requestAnimationFrame(step);
 }
 
@@ -19,9 +23,12 @@ function init() {
 function step(i) {
 
     screen.clear()
+    stone.colisioner.add([[0.2, 0.0],[1.0,1.0]])
+    //console.log(stone.colisioner.is_colision(stone.colider()))
     timer.setTime()
     stone.parabol(i/10000)
     stone.draw("image")
+    bird.draw("image")
     window.requestAnimationFrame(step);
 
 }
@@ -75,7 +82,7 @@ class CanvasElement {
                         ]
                 }
 
-            case "lb_origin":
+            case "lb_corner":
                 switch (axis) {
                     case "x":
                         return [
@@ -86,6 +93,18 @@ class CanvasElement {
                             this._canvas_.height * (1 - k[0]) - this._reaxe_(k[1]/2, "y", "resize")
                         ]
                 }
+
+                case "rh_corner":
+                    switch (axis) {
+                        case "x":
+                            return [
+                                this._canvas_.width * (k[0]) + this._reaxe_(k[1]/2, "x", "resize"),
+                            ]
+                        case "y":
+                            return [
+                                this._canvas_.height * (1 - k[0]) + this._reaxe_(k[1]/2, "y", "resize")
+                            ]
+                    }
 
 
             default:
@@ -99,7 +118,7 @@ class CanvasElement {
                             this._canvas_.height * k
                         ]
                 }
-        }9
+        }
 
 
     }
@@ -115,8 +134,8 @@ class CanvasElement {
                 this._ctx_.beginPath();
     
                 this._ctx_.rect(
-                    this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
-                    this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
+                    this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
+                    this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
                     this._reaxe_(this._size_.width, "x", "resize"),
                     this._reaxe_(this._size_.height, "y", "resize"));
     
@@ -137,8 +156,8 @@ class CanvasElement {
             case "image":
     
                 this._ctx_.drawImage(this.tex,
-                    this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
-                    this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
+                    this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
+                    this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
                     this._reaxe_(this._size_.width, "x", "resize"),
                     this._reaxe_(this._size_.height, "y", "resize")
                 );
@@ -153,8 +172,16 @@ class CanvasElement {
 
 
 
-    colision(other) {
-        return false;
+    colider() {
+        let lbx = this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner")
+        let lby = this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner")
+        let rbx = this._reaxe_([this._position_.x, this._size_.width], "x", "rh_corner")
+        let rby = this._reaxe_([this._position_.y, this._size_.height], "y", "rh_corner")
+
+        let x = [lbx, rbx]
+        let y = [lby, rby]
+
+        return [x, y]
     }
 }
 
@@ -177,8 +204,8 @@ class TimeScore extends CanvasElement {
 
 
         this._ctx_.fillText(String(this._score_) + "    " + this._time_.disp,
-        this._reaxe_([this._position_.x, this._size_.width], "x", "lb_origin"),
-        this._reaxe_([this._position_.y, this._size_.height], "y", "lb_origin"),
+        this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
+        this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
         );
 
         this._ctx_.fillStyle = 'blue';
@@ -204,6 +231,39 @@ class OneStone extends CanvasElement {
 
         }
 
+        this.colisioner = {
+            x: [],
+            y: [],
+            add: function (mat) {
+                this.x.push(mat[0][0])
+                this.x.push(mat[0][1])
+                this.y.push(mat[1][0])
+                this.y.push(mat[1][1])
+            },
+
+            clear: function(){
+                this.x = []
+                this.y = []
+            },
+
+            is_colision: function (mat){
+                let ix_x = false
+                let is_y = false
+                for (let i = 0; i < this.x.length; i++) {
+                    if (this.x[i] > mat[0][0] && this.x[i] < mat[0][1]) {
+                        ix_x = true
+                    }
+                }
+                for (let i = 0; i < this.y.length; i++) {
+                    if (this.y[i] > mat[1][0] && this.y[i] < mat[1][1]) {
+                        is_y = true
+                    }
+                }
+            return [ix_x,  is_y]
+            }
+         }
+
+
         this._gravity_ = -1 / 2 * grv
     }
 
@@ -212,7 +272,20 @@ class OneStone extends CanvasElement {
         this._position_.x = this._position_.x0 + this._speed_.x * t
         this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
+        let coliders = this.colider()
+        let is_colided = this.colisioner.is_colision(coliders)
+
+
 
     }
+
+}
+
+
+class Twobirds extends CanvasElement {
+    constructor(canvas_id, id = null, pos) {
+        super(canvas_id, id, pos);
+    }
+
 
 }
