@@ -282,8 +282,11 @@ class OneStone extends CanvasElement {
 
     parabol(t) {
 
-        this._position_.x = this._position_.x0 + this._speed_.x * t
-        this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
+        //this._position_.x = this._position_.x0 + this._speed_.x * t
+        //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
+
+        this._position_.x += this._speed_.x/100
+        this._position_.y += this._speed_.y/100
 
         let is_colided = this.colisioner.is_colision(this.colider())
         if (is_colided[0] ) {
