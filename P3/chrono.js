@@ -32,7 +32,7 @@ class Crono {
         }
 
         //-- Mostrar el valor actual
-        this.disp = this.min + ":" + this.seg + ":" + this.cent
+        this.disp = "0:" + this.min + ":" + this.seg
     }
 
     //-- Arrancar el cronómetro

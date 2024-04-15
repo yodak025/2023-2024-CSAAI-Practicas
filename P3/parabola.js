@@ -1,3 +1,4 @@
+v_frame = 0;
 
 function init() {
 
@@ -12,7 +13,7 @@ function init() {
     stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [1, 1], 9.81);
     timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
 
-    bird = new Twobirds("canvas", "Bird0", [0.5, 0.5, 0.1, 0.1]);
+    bird = new Twobirds("canvas", "Bird0", [0.5, 0.5, 0.15, 0.15]);
 
 
 
@@ -22,13 +23,15 @@ function init() {
 
 function step(i) {
 
+    v_frame += 1;
+
     screen.clear()
     stone.colisioner.add([[0.2, 0.0],[1.0,1.0]])
     //console.log(stone.colisioner.is_colision(stone.colider()))
     timer.setTime()
-    stone.parabol(i/10000)
+    stone.parabol(v_frame/1000)
     stone.draw("image")
-    bird.draw("image")
+    bird.animate_bird(Math.trunc(v_frame/15))
     window.requestAnimationFrame(step);
 
 }
@@ -39,7 +42,9 @@ class CanvasElement {
     constructor(canvas_id, id = null, pos = [0.5, 0.5, 0.5, 0.5]) {
         this._RATIO_ = null;
 
-        this.tex = document.getElementById(id);
+        if (id != null) {
+            this.tex = document.getElementById(id);
+        }
 
         this._canvas_id_ = canvas_id;
         this._id_ = id;
@@ -284,7 +289,22 @@ class OneStone extends CanvasElement {
 
 class Twobirds extends CanvasElement {
     constructor(canvas_id, id = null, pos) {
-        super(canvas_id, id, pos);
+        super(canvas_id, null, pos);
+
+        if (id != null) {
+            this.texs = document.getElementsByClassName(id);
+            this.tex = this.texs[0]
+        }
+        
+        
+
+    }
+
+    animate_bird(t) {
+
+        this.tex = this.texs[t % 6]
+
+        this.draw("image")
     }
 
 
