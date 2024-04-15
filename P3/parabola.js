@@ -9,15 +9,17 @@ function init() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    screen = new CanvasElement("canvas", "Screen");
+    screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95]);
     stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [1, 1], 9.81);
     timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
 
     bird = new Twobirds("canvas", "Bird0", [0.5, 0.5, 0.15, 0.15]);
 
-
+    stone.colisioner.add0(screen.colider())
+    stone.colisioner.add(bird.colider())
 
     window.requestAnimationFrame(step);
+    
 }
 
 
@@ -26,8 +28,8 @@ function step(i) {
     v_frame += 1;
 
     screen.clear()
-    stone.colisioner.add([[0.2, 0.0],[1.0,1.0]])
-    //console.log(stone.colisioner.is_colision(stone.colider()))
+    
+    console.log(stone.colisioner.is_colision(stone.colider()))
     timer.setTime()
     stone.parabol(v_frame/1000)
     stone.draw("image")
@@ -178,10 +180,10 @@ class CanvasElement {
 
 
     colider() {
-        let lbx = this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner")
-        let lby = this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner")
-        let rbx = this._reaxe_([this._position_.x, this._size_.width], "x", "rh_corner")
-        let rby = this._reaxe_([this._position_.y, this._size_.height], "y", "rh_corner")
+        let lbx = this._position_.x - this._size_.width/2
+        let lby = this._position_.y - this._size_.height/2
+        let rbx = this._position_.x + this._size_.width/2
+        let rby = this._position_.y + this._size_.height/2
 
         let x = [lbx, rbx]
         let y = [lby, rby]
@@ -237,13 +239,21 @@ class OneStone extends CanvasElement {
         }
 
         this.colisioner = {
+
             x: [],
             y: [],
+
+            x0: [],
+            y0: [],
+
             add: function (mat) {
-                this.x.push(mat[0][0])
-                this.x.push(mat[0][1])
-                this.y.push(mat[1][0])
-                this.y.push(mat[1][1])
+                this.x.push(mat[0])
+                this.y.push(mat[1])
+            },
+
+            add0: function (mat) {
+                this.x0.push(mat[0])
+                this.y0.push(mat[1])
             },
 
             clear: function(){
@@ -252,19 +262,17 @@ class OneStone extends CanvasElement {
             },
 
             is_colision: function (mat){
-                let ix_x = false
-                let is_y = false
-                for (let i = 0; i < this.x.length; i++) {
-                    if (this.x[i] > mat[0][0] && this.x[i] < mat[0][1]) {
-                        ix_x = true
-                    }
-                }
-                for (let i = 0; i < this.y.length; i++) {
-                    if (this.y[i] > mat[1][0] && this.y[i] < mat[1][1]) {
-                        is_y = true
-                    }
-                }
-            return [ix_x,  is_y]
+                let bx = false
+                let by = false
+
+                if ((mat[0][0] < this.x0[0])||(mat[0][1] > this.x0[1]))
+                    bx = true
+                if ((mat[1][0] < this.y0[0])||(mat[1][1] > this.y0[1]))
+                    by = true
+
+
+
+            return [bx, by]
             }
          }
 
@@ -277,8 +285,13 @@ class OneStone extends CanvasElement {
         this._position_.x = this._position_.x0 + this._speed_.x * t
         this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
-        let coliders = this.colider()
-        let is_colided = this.colisioner.is_colision(coliders)
+        let is_colided = this.colisioner.is_colision(this.colider())
+        if (is_colided[0] ) {
+            this._speed_.x = -this._speed_.x
+        }
+        if (is_colided[1]) {
+            this._speed_.y = -this._speed_.y
+        }
 
 
 
@@ -303,7 +316,6 @@ class Twobirds extends CanvasElement {
     animate_bird(t) {
 
         this.tex = this.texs[t % 6]
-
         this.draw("image")
     }
 
