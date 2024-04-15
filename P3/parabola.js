@@ -10,7 +10,7 @@ function init() {
     canvas.height = window.innerHeight;
     
     screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95]);
-    stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [1, 1], 9.81);
+    stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [5, 10], 9.81);
     timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
 
     bird = new Twobirds("canvas", "Bird0", [0.5, 0.5, 0.15, 0.15]);
@@ -238,6 +238,8 @@ class OneStone extends CanvasElement {
 
         }
 
+        this._boings = 0
+
         this.colisioner = {
 
             x: [],
@@ -285,17 +287,25 @@ class OneStone extends CanvasElement {
         //this._position_.x = this._position_.x0 + this._speed_.x * t
         //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
+        if (this._boings > 15){
+            return
+        }
+
         this._speed_.y += this._gravity_ * t
 
         this._position_.x += this._speed_.x /500
         this._position_.y += this._speed_.y /500
 
         let is_colided = this.colisioner.is_colision(this.colider())
-        if (is_colided[0] ) {
+        if (is_colided[0]) {
             this._speed_.x = -this._speed_.x
+            this._boings += 1
+            return
         }
         if (is_colided[1]) {
             this._speed_.y = -this._speed_.y
+            this._boings += 1
+            return
         }
 
 
