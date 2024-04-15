@@ -29,7 +29,7 @@ function step(i) {
 
     screen.clear()
     
-    console.log(stone.colisioner.is_colision(stone.colider()))
+    //console.log(stone.colisioner.is_colision(stone.colider()))
     timer.setTime()
     stone.parabol(v_frame/1000)
     stone.draw("image")
@@ -265,9 +265,9 @@ class OneStone extends CanvasElement {
                 let bx = false
                 let by = false
 
-                if ((mat[0][0] < this.x0[0])||(mat[0][1] > this.x0[1]))
+                if ((mat[0][0] < this.x0[0][0])||(mat[0][1] > this.x0[0][1]))
                     bx = true
-                if ((mat[1][0] < this.y0[0])||(mat[1][1] > this.y0[1]))
+                if ((mat[1][0] < this.y0[0][0])||(mat[1][1] > this.y0[0][1]))
                     by = true
 
 
