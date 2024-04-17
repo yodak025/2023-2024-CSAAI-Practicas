@@ -16,13 +16,18 @@
 
 }
 
-.Bird0 {
+.BlueBird {
+    display: none;
+}
+
+.GreenBird {
     display: none;
 }
 
 #Stone {
     display: none;
 }
+
 #TimeScore{
     display: none;
 }

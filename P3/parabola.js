@@ -13,10 +13,13 @@ function init() {
     stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [5, 10], 9.81);
     timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
 
-    bird = new Twobirds("canvas", "Bird0", [0.5, 0.5, 0.15, 0.15]);
+    blue_bird = new Twobirds("canvas", "BlueBird", [0.5, 0.5, 0.15, 0.15]);
+    green_bird = new Twobirds("canvas", "GreenBird", [0.7, 0.4, 0.15, 0.15]);
 
     stone.colisioner.add0(screen.colider())
-    stone.colisioner.add(bird.colider())
+    stone.colisioner.add(blue_bird.colider())
+    stone.colisioner.add(green_bird.colider())
+    
 
     window.requestAnimationFrame(step);
     
@@ -33,7 +36,8 @@ function step(i) {
     timer.setTime()
     stone.parabol(v_frame/1000)
     stone.draw("image")
-    bird.animate_bird(Math.trunc(v_frame/15))
+    blue_bird.animate_bird(v_frame/8)
+    green_bird.animate_bird(v_frame/6)
     window.requestAnimationFrame(step);
 
 }
@@ -170,11 +174,7 @@ class CanvasElement {
                 );
                 break;
         }
-    
-    
-    
-    
-    
+
     }
 
 
@@ -316,22 +316,26 @@ class OneStone extends CanvasElement {
 
 
 class Twobirds extends CanvasElement {
-    constructor(canvas_id, id = null, pos) {
+    constructor(canvas_id, id, pos) {
         super(canvas_id, null, pos);
+        this._id_ = id; 
+        this.texs = [];
 
-        if (id != null) {
-            this.texs = document.getElementsByClassName(id);
-            this.tex = this.texs[0]
+        for (let i = 0; i < 6; i++) {
+            this.texs.push(document.getElementById(this._id_ + i))
         }
         
+        this.__FRAMES__ = this.texs.length
+
         
 
     }
 
-    animate_bird(t) {
+    animate_bird(x) {
+        this.tex = this.texs[Math.trunc(x) % this.__FRAMES__]
+        this.draw("image");
 
-        this.tex = this.texs[t % 6]
-        this.draw("image")
+       
     }
 
 
