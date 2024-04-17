@@ -248,9 +248,12 @@ class OneStone extends CanvasElement {
             x0: [],
             y0: [],
 
+            len: 0,
+
             add: function (mat) {
                 this.x.push(mat[0])
                 this.y.push(mat[1])
+                this.len += 1
             },
 
             add0: function (mat) {
@@ -271,7 +274,19 @@ class OneStone extends CanvasElement {
                     bx = true
                 if ((mat[1][0] < this.y0[0][0])||(mat[1][1] > this.y0[0][1]))
                     by = true
+                for (let i = 1; i < this.len; i++) {
 
+                    if (
+                        ((mat[0][0] > this.x[i][0])&(mat[0][0] < this.x[i][1])
+                    | (mat[0][1] > this.x[i][0])&(mat[0][1] < this.x[i][1])) 
+                    & ((mat[1][0] > this.y[i][0])&(mat[1][0] < this.y[i][1])
+                    | (mat[1][0] > this.y[i][0])&(mat[1][1] < this.y[i][1]))){
+
+                        bx = true
+                        by = true
+                    }
+                }
+                
 
 
             return [bx, by]
@@ -287,7 +302,7 @@ class OneStone extends CanvasElement {
         //this._position_.x = this._position_.x0 + this._speed_.x * t
         //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
-        if (this._boings > 15){
+        if (this._boings > 50){
             return
         }
 
