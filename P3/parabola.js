@@ -9,16 +9,18 @@ function init() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95]);
-    stone = new OneStone("canvas", "Stone", [0.1, 0.9,0.2,0.2], [5, 10], 9.81);
-    timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2]);
+    screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95, 1.0, 0.95]);
+    stone = new OneStone("canvas", "Stone", [0.1, 0.9, 0.2, 0.2, 0.2, 0.2], [3, 10], 9.81);
+    timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2, 0.4, 0.2]);
 
-    blue_bird = new Twobirds("canvas", "BlueBird", [0.5, 0.5, 0.15, 0.15]);
-    green_bird = new Twobirds("canvas", "GreenBird", [0.7, 0.4, 0.15, 0.15]);
+    blue_bird = new Twobirds("canvas", "BlueBird", [0.5, 0.5, 0.15, 0.15, 0.05/2, 0.10]);
+    green_bird = new Twobirds("canvas", "GreenBird", [0.7, 0.4, 0.15, 0.15, 0.05/2, 0.10]);
 
     stone.colisioner.add0(screen.colider())
     stone.colisioner.add(blue_bird.colider())
     stone.colisioner.add(green_bird.colider())
+
+
     
 
     window.requestAnimationFrame(step);
@@ -34,7 +36,7 @@ function step(i) {
     
     //console.log(stone.colisioner.is_colision(stone.colider()))
     timer.setTime()
-    stone.parabol(v_frame/1000)
+    stone.parabola(v_frame/1000)
     stone.draw("image")
     blue_bird.animate_bird(v_frame/8)
     green_bird.animate_bird(v_frame/6)
@@ -45,7 +47,7 @@ function step(i) {
 
 
 class CanvasElement {
-    constructor(canvas_id, id = null, pos = [0.5, 0.5, 0.5, 0.5]) {
+    constructor(canvas_id, id = null, pos) {
         this._RATIO_ = null;
 
         if (id != null) {
@@ -58,9 +60,16 @@ class CanvasElement {
         this._canvas_ = document.getElementById(this._canvas_id_);
         this._RATIO_ = this._canvas_.width / this._canvas_.height;
 
+        this.is_dead = false;
+
+
+
         this._position_ = {
             x: pos[0],
-            y: pos[1]
+            y: pos[1],
+            cx: pos[4],
+            cy: pos[5]
+
         }
 
         this._size_ = {
@@ -140,6 +149,11 @@ class CanvasElement {
     }
 
     draw(type = "rectangle") {
+
+        if (this.is_dead) {
+            return;
+        }
+
         switch (type) {
             case "rectangle":
                 this._ctx_.beginPath();
@@ -180,15 +194,16 @@ class CanvasElement {
 
 
     colider() {
-        let lbx = this._position_.x - this._size_.width/2
-        let lby = this._position_.y - this._size_.height/2
-        let rbx = this._position_.x + this._size_.width/2
-        let rby = this._position_.y + this._size_.height/2
+        let lbx = this._position_.x - this._position_.cx/2
+        let lby = this._position_.y - this._position_.cy/2
+        let rbx = this._position_.x + this._position_.cx/2
+        let rby = this._position_.y + this._position_.cy/2
 
         let x = [lbx, rbx]
         let y = [lby, rby]
+        let _obj = this
 
-        return [x, y]
+        return [x, y, _obj]
     }
 }
 
@@ -230,7 +245,9 @@ class OneStone extends CanvasElement {
             x: pos[0],
             y: pos[1],
             x0: pos[0],
-            y0: pos[1]
+            y0: pos[1],
+            cx: pos[4],
+            cy: pos[5]
         }
         this._speed_ = {
             x: spd[0],
@@ -244,21 +261,25 @@ class OneStone extends CanvasElement {
 
             x: [],
             y: [],
+            objs: [],
 
             x0: [],
             y0: [],
+            objs0: [],
 
             len: 0,
 
             add: function (mat) {
                 this.x.push(mat[0])
                 this.y.push(mat[1])
+                this.objs.push(mat[2])
                 this.len += 1
             },
 
             add0: function (mat) {
                 this.x0.push(mat[0])
                 this.y0.push(mat[1])
+                this.objs0.push(mat[2])
             },
 
             clear: function(){
@@ -267,29 +288,39 @@ class OneStone extends CanvasElement {
             },
 
             is_colision: function (mat){
-                let bx = false
-                let by = false
+                let bx = false;
+                let by = false;
+                let description = "";
 
                 if ((mat[0][0] < this.x0[0][0])||(mat[0][1] > this.x0[0][1]))
-                    bx = true
-                if ((mat[1][0] < this.y0[0][0])||(mat[1][1] > this.y0[0][1]))
-                    by = true
-                for (let i = 1; i < this.len; i++) {
+                    bx = true;
+                    description = "edges"
 
-                    if (
-                        ((mat[0][0] > this.x[i][0])&(mat[0][0] < this.x[i][1])
+                if ((mat[1][0] < this.y0[0][0])||(mat[1][1] > this.y0[0][1]))
+                    by = true;
+                    description = "edges"
+
+                for (let i = 0; i < this.len; i++) {
+
+                    if (((mat[0][0] > this.x[i][0])&(mat[0][0] < this.x[i][1])
                     | (mat[0][1] > this.x[i][0])&(mat[0][1] < this.x[i][1])) 
                     & ((mat[1][0] > this.y[i][0])&(mat[1][0] < this.y[i][1])
-                    | (mat[1][0] > this.y[i][0])&(mat[1][1] < this.y[i][1]))){
+                    | (mat[1][1] > this.y[i][0])&(mat[1][1] < this.y[i][1]))){
 
-                        bx = true
-                        by = true
+                        bx = true;
+                        by = true;
+
+                        this.objs[i].is_dead = true;
+
+
+                        description = "object"
+                        
                     }
                 }
                 
 
 
-            return [bx, by]
+            return [bx, by, description]
             }
          }
 
@@ -297,12 +328,12 @@ class OneStone extends CanvasElement {
         this._gravity_ = -1 / 2 * grv
     }
 
-    parabol(t) {
+    parabola(t) {
 
         //this._position_.x = this._position_.x0 + this._speed_.x * t
         //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
-        if (this._boings > 50){
+        if (this._boings > 15){
             return
         }
 
@@ -312,18 +343,30 @@ class OneStone extends CanvasElement {
         this._position_.y += this._speed_.y /500
 
         let is_colided = this.colisioner.is_colision(this.colider())
-        if (is_colided[0]) {
-            this._speed_.x = -this._speed_.x
-            this._boings += 1
-            return
+
+        switch (is_colided[2]) {
+            case "edges":
+                if (is_colided[0]) {
+                    this._speed_.x = -this._speed_.x
+                    this._boings += 1
+                    return
+                }
+                if (is_colided[1]) {
+                    this._speed_.y = -this._speed_.y
+                    this._boings += 1
+                    return
+                }
+            default:
+                break;
+
         }
-        if (is_colided[1]) {
-            this._speed_.y = -this._speed_.y
-            this._boings += 1
-            return
-        }
+        
 
 
+
+    }
+
+    parabol(){
 
     }
 

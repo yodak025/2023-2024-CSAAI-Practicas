@@ -15,7 +15,7 @@ class Crono {
     }
 
     //-- Método que se ejecuta cada centésima
-    tic() {
+    _tic_() {
         //-- Incrementar en una centesima
         this.cent += 1;
 
@@ -41,7 +41,7 @@ class Crono {
           //-- Lanzar el temporizador para que llame 
           //-- al método tic cada 10ms (una centésima)
           this.timer = setInterval( () => {
-              this.tic();
+              this._tic_();
           }, 10);
         }
     }
