@@ -10,7 +10,7 @@ function init() {
     canvas.height = window.innerHeight;
     
     screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95, 1.0, 0.95]);
-    stone = new OneStone("canvas", "Stone", [0.1, 0.9, 0.2, 0.2, 0.2, 0.2], [3, 10], 9.81);
+    stone = new OneStone("canvas", "Stone", [0.1, 0.9, 0.2, 0.2, 0.1, 0.1], [3, 10], 9.81);
     timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2, 0.4, 0.2]);
 
     blue_bird = new Twobirds("canvas", "BlueBird", [0.5, 0.5, 0.15, 0.15, 0.05/2, 0.10]);
@@ -333,7 +333,7 @@ class OneStone extends CanvasElement {
         //this._position_.x = this._position_.x0 + this._speed_.x * t
         //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
-        if (this._boings > 15){
+        if (this._boings > 5){
             return
         }
 
@@ -348,7 +348,6 @@ class OneStone extends CanvasElement {
             case "edges":
                 if (is_colided[0]) {
                     this._speed_.x = -this._speed_.x
-                    this._boings += 1
                     return
                 }
                 if (is_colided[1]) {
