@@ -46,7 +46,7 @@ const generateGame = () => {
         "DK_2_2.png",
         "DK_2_3.png",
         "DK_2_4.png",
-        "DK_3.png"
+        "DK_3.PNG"
     ];
 
 
