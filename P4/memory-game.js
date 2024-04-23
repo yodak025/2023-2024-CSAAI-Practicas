@@ -26,30 +26,54 @@ const generateGame = () => {
 
     //-- Creamos un array con los emojis que vamos a utilizar en nuestro juego
     const emojis = ['🥔', '🍒', '🥑', '🌽', '🥕', '🍇', '🍉', '🍌', '🥭', '🍍']
-    
+
+    const DK_stickers = [
+        "DK_0_0.png",
+        "DK_0_1.png",
+        "DK_0_2.png",
+        "DK_0_3.png",
+        "DK_0_4.png",
+        "DK_0_5.png",
+        "DK_0_6.png",
+        "DK_1_0.png",
+        "DK_1_1.png",
+        "DK_1_2.png",
+        "DK_1_3.png",
+        "DK_1_4.png",
+        "DK_1_5.png",
+        "DK_2_0.png",
+        "DK_2_1.png",
+        "DK_2_2.png",
+        "DK_2_3.png",
+        "DK_2_4.png",
+        "DK_3.png"
+    ];
+
+
+
     //-- Elegimos un subconjunto de emojis al azar, así cada vez que comienza el juego
     // es diferente.
     // Es decir, si tenemos un array con 10 emojis, vamos a elegir el cuadrado de las
     // dimensiones entre dos, para asegurarnos de que cubrimos todas las cartas
-    const picks = pickRandom(emojis, (dimensions * dimensions) / 2) 
+    const picks = pickRandom(DK_stickers, (dimensions * dimensions) / 2)
 
     //-- Después descolocamos las posiciones para asegurarnos de que las parejas de cartas
     // están desordenadas.
     const items = shuffle([...picks, ...picks])
-    
+
     //-- Vamos a utilizar una función de mapeo para generar 
     //  todas las cartas en función de las dimensiones
     const cards = `
         <div class="tablero" style="grid-template-columns: repeat(${dimensions}, auto)">
             ${items.map(item => `
-                <div class="card">
+                <div class="card"  item-back="Stickers/${item}">
                     <div class="card-front"></div>
-                    <div class="card-back">${item}</div>
+                    <div class="card-back"><img src="Stickers/${item}" alt="Error", class="sticker"></div>
                 </div>
             `).join('')}
        </div>
     `
-    
+
     //-- Vamos a utilizar un parser para transformar la cadena que hemos generado
     // en código html.
     const parser = new DOMParser().parseFromString(cards, 'text/html')
@@ -63,7 +87,7 @@ const pickRandom = (array, items) => {
     // La sintaxis de tres puntos nos sirve para hacer una copia del array
     const clonedArray = [...array]
     // Random picks va almacenar la selección al azar de emojis
-    const randomPicks = [] 
+    const randomPicks = []
 
     for (let index = 0; index < items; index++) {
         const randomIndex = Math.floor(Math.random() * clonedArray.length)
@@ -108,8 +132,8 @@ const attachEventListeners = () => {
         // Cuando se trata de una carta que no está girada, le damos la vuelta para mostrarla
         if (eventTarget.className.includes('card') && !eventParent.className.includes('flipped')) {
             flipCard(eventParent)
-        // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
-        // empezar el juego
+            // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
+            // empezar el juego
         } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
             startGame()
         }
@@ -158,9 +182,12 @@ const flipCard = card => {
 
         // Si las cartas coinciden las marcamos como pareja 
         // añadiendo la clase correspondiente
-        if (flippedCards[0].innerText === flippedCards[1].innerText) {
-            flippedCards[0].classList.add('matched')
-            flippedCards[1].classList.add('matched')
+        const img1 = flippedCards[0].querySelector('.sticker').src;
+        const img2 = flippedCards[1].querySelector('.sticker').src;
+
+        if (img1 === img2) {
+            flippedCards[0].classList.add('matched');
+            flippedCards[1].classList.add('matched');
         }
 
         // Arrancamos un temporizador que comprobará si tiene
