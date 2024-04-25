@@ -25,7 +25,7 @@ const generateGame = () => {
     }
 
     //-- Creamos un array con los emojis que vamos a utilizar en nuestro juego
-    const emojis = ['🥔', '🍒', '🥑', '🌽', '🥕', '🍇', '🍉', '🍌', '🥭', '🍍']
+    const emojis = ['🥔', '🍒', '🥑', '🌽', '🥕', '🍇', '🍉', '🍌', '🥭', '🍍'];
 
     const DK_stickers = [
         "DK_0_0.png",
