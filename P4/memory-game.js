@@ -1,3 +1,8 @@
+
+
+
+
+
 const selectors = {
     gridContainer: document.querySelector('.grid-container'),
     tablero: document.querySelector('.tablero'),
@@ -182,6 +187,11 @@ const flipCard = card => {
 
         // Si las cartas coinciden las marcamos como pareja 
         // añadiendo la clase correspondiente
+
+        //// En  este caso ha sido necesario realizar un pequeño cambio
+        //// ya que con la implementación para los emojis no se detectaban
+        //// los matches correctos.
+
         const img1 = flippedCards[0].querySelector('.sticker').src;
         const img2 = flippedCards[1].querySelector('.sticker').src;
 
