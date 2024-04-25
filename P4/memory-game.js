@@ -1,5 +1,41 @@
+//// Hola, Jesús!
+
+//// Quería aprovechar para darte las gracias por incluir esta práctica.
+//// Estos días me esta costando mucho disfrutar de la carrera, pero estudiando
+//// este código he disfrutado bastante. Es increible lo que se puede hacer con
+//// un puñado de divs y algo de imaginación. Y muy buenos los apuntes desgranándolo, 
+//// me ha ayudado a mejorar como programador, que no es algo que se pueda
+//// decir de la mayoria de asignaturas en esta carrera.
+
+//// Por desgracia, no he podido dedicarle tanto tiempo como para aportar
+//// algo fresco o mínimanente interesante. Si te resulta muy aburrido, 
+//// puedes probar mi tiro parabólico. A día 25 de Abril de 2024 aún está
+//// en desarrollo, pero confío en que para cuando puedas corregir esto esté listo.
+
+//// Muchas gracias por leer mi código.
 
 
+
+
+
+
+var modal = document.getElementById('myModal');
+var span = document.getElementsByClassName('close')[0];
+
+
+window.onload = function() {
+    modal.style.display = "block";
+  }
+  
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 
 
 
@@ -140,7 +176,11 @@ const attachEventListeners = () => {
             // Pero si lo que ha pasado es un clic en el botón de comenzar lo que hacemos es
             // empezar el juego
         } else if (eventTarget.nodeName === 'BUTTON' && !eventTarget.className.includes('disabled')) {
-            startGame()
+            if (eventTarget.className == "restart") {
+                location.reload()
+            } else {
+                startGame()
+            }
         }
     })
 }
@@ -239,7 +279,6 @@ const flipBackCards = () => {
     // Ponemos el contado de parejas de cartas a cero
     state.flippedCards = 0
 }
-
 
 
 // Generamos el juego
