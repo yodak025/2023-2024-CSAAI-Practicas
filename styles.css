@@ -2,6 +2,10 @@ body {
     background-color: lightblue;
 }
 
+main{
+
+}
+
 .cool-btn {
     background-color: #4CAF50; /* Color de fondo */
 
@@ -26,14 +30,22 @@ body {
 
 
 footer {
+    z-index: 1;
     position: fixed;
     bottom: 0;
+    left:0;
     width: 100%;
-    margin-left: 0px;
-    margin-right: 0px;
+    height:5vh;
+
     background-color: #000;
     color: #fff;
+}footer p {
+    z-index: 2;
+    position: fixed;
+    width: 100%;
     text-align: center;
+    margin: 1.5vh 1.5vh 0 0;
+    font-size: 2vh;
 }
 
 /* Control de dispositivos verticales */
