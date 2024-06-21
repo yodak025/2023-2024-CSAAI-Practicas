@@ -8,7 +8,7 @@ body {
     margin: 5px; /* Margen alrededor del botón */
     border: none; /* Bordes */
     border-radius: 7px;
-    padding: 0.5%; /*Espaciado alrededor del texto */
+    padding: 7px; /*Espaciado alrededor del texto */
     color: white; /* Color del texto */
     
     text-align: center; /* Centrar el texto */
@@ -38,8 +38,4 @@ footer {
 
 /* Control de dispositivos verticales */
 @media (orientation:portrait){
-    body {
-        background-color: green;
-    }
-  
 }
