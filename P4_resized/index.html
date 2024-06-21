@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Memory </title>
+
+        <link rel="stylesheet" href="memory.css" />
+        <script src="memory-game.js" defer></script>
+    </head>
+    <body>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close">×</span>
+              <img class="fImage" src="Stickers/friendship.png" alt="FriendshipError">
+              <div class="fText">
+                <h2>DK Memory!</h2>
+                Dedicado a
+                <a href="https://www.instagram.com/decoy_art.o/">@decoy_art.o</a> , gran artista, mejor amigo; en agradecimiento por su colaboración en 
+                <a href="https://yodak025.github.io/2023-2024-CSAAI-Practicas/P3/index.html">Kill2BirdsWith1Stone</a>
+                <p>Stickers a la venta!</p>
+                <p>Haz clic en las cartas para darles la vuelta.</p>
+                <p>Consigue acertar lo más rápido posible!!!</p>
+            </div>
+            </div>
+          
+          </div>
+          
+        <div class="game">
+            <div class="controles">
+                <button class="start">Comenzar</button>
+                <button class="restart">Reiniciar</button>
+                <div class="display">
+                    <div class="movimientos">0 movimientos</div>
+                    <div class="timer">tiempo: 0 sec</div>
+                </div>
+            </div>
+            <div class="grid-container">
+                <div class="tablero" grid-dimension="4">
+                    <div class="card", item-back="Stickers/DK_0_0.png">
+                        <div class="card-front"></div>
+                        <div class="card-back"><img src="Stickers/DK_0_0.png" alt="StickerError", class="sticker"></div>
+                    </div>
+                </div>
+                
+                <div class="win">¡Has Ganado!</div>
+            </div>
+        </div>
+    </body>
+</html>

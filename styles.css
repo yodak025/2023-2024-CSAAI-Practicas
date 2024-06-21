@@ -1,0 +1,45 @@
+body {
+    background-color: lightblue;
+}
+
+.cool-btn {
+    background-color: #4CAF50; /* Color de fondo */
+
+    margin: 5px; /* Margen alrededor del botón */
+    border: none; /* Bordes */
+    border-radius: 7px;
+    padding: 0.5%; /*Espaciado alrededor del texto */
+    color: white; /* Color del texto */
+    
+    text-align: center; /* Centrar el texto */
+
+    display: inline-block;
+    font-size: 16px; /* Tamaño del texto */
+   
+    cursor: pointer; /* Cambiar el cursor a mano al pasar sobre el botón */
+    transition-duration: 0.6s;  /*Duración de la transición */
+
+  } .cool-btn:hover {
+    background-color: white; /* Color de fondo al pasar el ratón */
+    color: black; /* Color del texto al pasar el ratón */
+  }
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+/* Control de dispositivos verticales */
+@media (orientation:portrait){
+    body {
+        background-color: green;
+    }
+  
+}
