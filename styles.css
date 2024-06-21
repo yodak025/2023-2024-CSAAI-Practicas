@@ -1,9 +1,50 @@
 body {
-    background-color: lightblue;
+    background-color: #add8e6;
 }
 
 main{
+    display: grid;
+    justify-items: center;
+    grid-gap: 5vh;
+    margin: 0 0 10vh 0;
+    background-color: hsla(0, 0%, 100%, 0.199) ;
+}
 
+article{
+    display: grid;
+    justify-items: center;
+    padding: 2vh;
+    background-color: hsla(0, 0%, 100%, 0.199) ;
+}
+
+section{
+    background-color: hsla(0, 0%, 100%, 0.199) ;
+}
+
+aside{
+    padding: 2px;
+    background-color: white;
+}
+
+
+
+footer {
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    left:0;
+    width: 100%;
+    height:5vh;
+
+    background-color: #000;
+    color: #fff;
+}footer p {
+    z-index: 2;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    margin: 1.5vh 1.5vh 0 0;
+    font-size: 2vh;
 }
 
 .cool-btn {
@@ -27,26 +68,6 @@ main{
     background-color: white; /* Color de fondo al pasar el ratón */
     color: black; /* Color del texto al pasar el ratón */
   }
-
-
-footer {
-    z-index: 1;
-    position: fixed;
-    bottom: 0;
-    left:0;
-    width: 100%;
-    height:5vh;
-
-    background-color: #000;
-    color: #fff;
-}footer p {
-    z-index: 2;
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    margin: 1.5vh 1.5vh 0 0;
-    font-size: 2vh;
-}
 
 /* Control de dispositivos verticales */
 @media (orientation:portrait){
