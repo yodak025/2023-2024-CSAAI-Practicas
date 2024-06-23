@@ -4,7 +4,7 @@ body {
 
 main{
     display: grid;
-    justify-items: center;
+    justify-items: center; /*mejor explicitar la disposición si se puede*/
     grid-gap: 5vh;
     margin: 0 0 10vh 0;
     background-color: hsla(0, 0%, 100%, 0.199) ;

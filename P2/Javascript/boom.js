@@ -1,13 +1,13 @@
 
 
-var win = false;
+var phase2 = false;
 var message = null
 
 function init() {
 
     var alph = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-    var boom = new Game(alph)
+    var boom = new Game(alph, turns=Infinity)
     var chrono = new Crono(document.getElementsByClassName("chrono")[0]);
 
     var started = false;
@@ -67,9 +67,6 @@ function init() {
         buttons[i] = document.getElementById(String(i));;
         buttons[i].onclick = () => {
 
-
-
-
             if (started) {
                 let pointer = false
                 for (let j = boom.curr_el; !pointer; j++) {
@@ -89,14 +86,16 @@ function init() {
 
                 boom.finish()
 
-                if (all_el(boom.key, -1)) {
+                if (allElementsAre(boom.key, -1)) {
 
-                    if (win) {
+                    if (phase2) {
                         window.alert("Vaya, has ganado de nuevo... De acuerdo, te enseñaré mi secreto.");
                         let btn = document.getElementById("MMButton")
                         btn.style.display = "inline"
+
                     } else {
-                        win = window.alert("Vaya, has ganado... Supongo que no me queda alternativa...");
+                        phase2 = true;
+                        window.alert("Vaya, has ganado... Supongo que no me queda alternativa...");
 
                         chrono.stop();
                         chrono.invert();
@@ -113,13 +112,15 @@ function init() {
                         }
 
                     }
-                } else if (boom.curr_el === 1 && boom.MAXTURNS - boom.turns === 0 && !win) {
+
+                    
+                } else if (boom.curr_el === 1 && boom.MAXTURNS - boom.turns === 0 && !phase2) {
                     window.alert("¡Para! ¿Que crees que haces? Esto no funciona. Vete de aquí por favor.");
                 }
 
 
 
-            } else if (!message) {
+            }/* else if (!message) {
 
                 message = window.prompt("¡¿Lo ves?! La página está rota. ¿Por qué sigues aquí?");
 
@@ -128,7 +129,7 @@ function init() {
                     window.alert("Pe.. Pero, ¿cómo lo supiste?");
                     let btn = document.getElementById("MMButton")
                     btn.style.display = "inline"  
-            }}
+            }}*/
         }
 
     }
@@ -147,7 +148,8 @@ function init() {
                 displays[boom.curr_el].classList.remove("match");
                 displays[boom.curr_el].classList.remove("demimatch");
 
-                if (win) {
+                if (phase2) {
+                    // Si, si falla se le resta un poco de tiempo a la cuenta
                     chrono.sus();
                 }
                 break;
@@ -171,7 +173,7 @@ function init() {
 
 }
 
-function all_el(arr, val) {
+function allElementsAre(arr, val) {
     for (let i = 0; i < arr.length; i++) {
         if (arr[i] != val) {
             return false

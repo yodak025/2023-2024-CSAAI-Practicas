@@ -1,5 +1,21 @@
+.BlueBird {
+    display: none;
+}
+
+.GreenBird {
+    display: none;
+}
+
+#Stone {
+    display: none;
+}
+
+#TimeScore{
+    display: none;
+}
+
 #canvas {
-    background-image: url('BackGround0.jpg');
+    background-image: url('Images/BackGround0.jpg');
     background-size: 100vw 100vh ;
     border-style: solid;
     border-width: 1px;
@@ -16,18 +32,10 @@
 
 }
 
-.BlueBird {
-    display: none;
-}
-
-.GreenBird {
-    display: none;
-}
-
-#Stone {
-    display: none;
-}
-
-#TimeScore{
-    display: none;
+#drawing-pad{
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.705);
+    border-radius: 10%;
+    position: fixed;
+    bottom: 0;
 }

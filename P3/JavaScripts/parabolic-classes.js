@@ -1,52 +1,4 @@
-v_frame = 0;
-
-function init() {
-
-    console.log("Ejecutando JS...");
-
-    const canvas = document.getElementById("canvas");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95, 1.0, 0.95]);
-    stone = new OneStone("canvas", "Stone", [0.1, 0.9, 0.2, 0.2, 0.1, 0.1], [3, 10], 9.81);
-    timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2, 0.4, 0.2]);
-
-    blue_bird = new Twobirds("canvas", "BlueBird", [0.5, 0.5, 0.15, 0.15, 0.05/2, 0.10]);
-    green_bird = new Twobirds("canvas", "GreenBird", [0.7, 0.4, 0.15, 0.15, 0.05/2, 0.10]);
-
-    stone.colisioner.add0(screen.colider())
-    stone.colisioner.add(blue_bird.colider())
-    stone.colisioner.add(green_bird.colider())
-
-
-    
-
-    window.requestAnimationFrame(step);
-    
-}
-
-
-function step(i) {
-
-    v_frame += 1;
-
-    screen.clear()
-    
-    //console.log(stone.colisioner.is_colision(stone.colider()))
-    timer.setTime()
-    stone.parabola(v_frame/1000)
-    stone.draw("image")
-    blue_bird.animate_bird(v_frame/8)
-    green_bird.animate_bird(v_frame/6)
-    window.requestAnimationFrame(step);
-
-}
-
-
-
-class CanvasElement {
+export class CanvasElement {
     constructor(canvas_id, id = null, pos) {
         this._RATIO_ = null;
 
@@ -92,13 +44,13 @@ class CanvasElement {
             case "resize":
                 switch (axis) {
                     case "x":
-                        
+
                         return [
                             this._canvas_.width * k / this._RATIO_,
                         ]
                     case "y":
                         return [
-                             this._canvas_.height * (k) 
+                            this._canvas_.height * (k)
                         ]
                 }
 
@@ -106,25 +58,25 @@ class CanvasElement {
                 switch (axis) {
                     case "x":
                         return [
-                            this._canvas_.width * (k[0]) - this._reaxe_(k[1]/2, "x", "resize"),
+                            this._canvas_.width * (k[0]) - this._reaxe_(k[1] / 2, "x", "resize"),
                         ]
                     case "y":
                         return [
-                            this._canvas_.height * (1 - k[0]) - this._reaxe_(k[1]/2, "y", "resize")
+                            this._canvas_.height * (1 - k[0]) - this._reaxe_(k[1] / 2, "y", "resize")
                         ]
                 }
 
-                case "rh_corner":
-                    switch (axis) {
-                        case "x":
-                            return [
-                                this._canvas_.width * (k[0]) + this._reaxe_(k[1]/2, "x", "resize"),
-                            ]
-                        case "y":
-                            return [
-                                this._canvas_.height * (1 - k[0]) + this._reaxe_(k[1]/2, "y", "resize")
-                            ]
-                    }
+            case "rh_corner":
+                switch (axis) {
+                    case "x":
+                        return [
+                            this._canvas_.width * (k[0]) + this._reaxe_(k[1] / 2, "x", "resize"),
+                        ]
+                    case "y":
+                        return [
+                            this._canvas_.height * (1 - k[0]) + this._reaxe_(k[1] / 2, "y", "resize")
+                        ]
+                }
 
 
             default:
@@ -143,7 +95,7 @@ class CanvasElement {
 
     }
 
-    clear(){
+    clear() {
         this._ctx_.clearRect(0, 0, this._canvas_.width, this._canvas_.height);
         this._recalc_window_()
     }
@@ -157,29 +109,29 @@ class CanvasElement {
         switch (type) {
             case "rectangle":
                 this._ctx_.beginPath();
-    
+
                 this._ctx_.rect(
                     this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
                     this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
                     this._reaxe_(this._size_.width, "x", "resize"),
                     this._reaxe_(this._size_.height, "y", "resize"));
-    
+
                 this._ctx_.fillStyle = 'green';
-    
+
                 this._ctx_.fill();
-    
+
                 this._ctx_.stroke();
-    
-    
+
+
                 this._ctx_.closePath();
                 this._ctx_.save();
-    
+
                 break;
-    
-    
-                
+
+
+
             case "image":
-    
+
                 this._ctx_.drawImage(this.tex,
                     this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
                     this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
@@ -191,13 +143,11 @@ class CanvasElement {
 
     }
 
-
-
     colider() {
-        let lbx = this._position_.x - this._position_.cx/2
-        let lby = this._position_.y - this._position_.cy/2
-        let rbx = this._position_.x + this._position_.cx/2
-        let rby = this._position_.y + this._position_.cy/2
+        let lbx = this._position_.x - this._position_.cx / 2
+        let lby = this._position_.y - this._position_.cy / 2
+        let rbx = this._position_.x + this._position_.cx / 2
+        let rby = this._position_.y + this._position_.cy / 2
 
         let x = [lbx, rbx]
         let y = [lby, rby]
@@ -208,7 +158,7 @@ class CanvasElement {
 }
 
 
-class TimeScore extends CanvasElement {
+export class TimeScore extends CanvasElement {
     constructor(canvas_id, id = null, pos = [0.5, 0.5, 0, 0]) {
         super(canvas_id, id, pos);
         this._time_ = new Crono()
@@ -226,8 +176,8 @@ class TimeScore extends CanvasElement {
 
 
         this._ctx_.fillText(String(this._score_) + "    " + this._time_.disp,
-        this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
-        this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
+            this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
+            this._reaxe_([this._position_.y, this._size_.height], "y", "lb_corner"),
         );
 
         this._ctx_.fillStyle = 'blue';
@@ -237,8 +187,8 @@ class TimeScore extends CanvasElement {
 }
 
 
-class OneStone extends CanvasElement {
-    constructor(canvas_id, id = null, pos, spd, grv) {
+export class OneStone extends CanvasElement {
+    constructor(canvas_id, id = null, pos, grv) {
         super(canvas_id, id, pos);
 
         this._position_ = {
@@ -250,8 +200,8 @@ class OneStone extends CanvasElement {
             cy: pos[5]
         }
         this._speed_ = {
-            x: spd[0],
-            y: spd[1],
+            x: 0,
+            y: 0,
 
         }
 
@@ -282,30 +232,30 @@ class OneStone extends CanvasElement {
                 this.objs0.push(mat[2])
             },
 
-            clear: function(){
+            clear: function () {
                 this.x = []
                 this.y = []
             },
 
-            is_colision: function (mat){
+            is_colision: function (mat) {
                 let bx = false;
                 let by = false;
                 let description = "";
 
-                if ((mat[0][0] < this.x0[0][0])||(mat[0][1] > this.x0[0][1]))
+                if ((mat[0][0] < this.x0[0][0]) || (mat[0][1] > this.x0[0][1]))
                     bx = true;
-                    description = "edges"
+                description = "edges"
 
-                if ((mat[1][0] < this.y0[0][0])||(mat[1][1] > this.y0[0][1]))
+                if ((mat[1][0] < this.y0[0][0]) || (mat[1][1] > this.y0[0][1]))
                     by = true;
-                    description = "edges"
+                description = "edges"
 
                 for (let i = 0; i < this.len; i++) {
 
-                    if (((mat[0][0] > this.x[i][0])&(mat[0][0] < this.x[i][1])
-                    | (mat[0][1] > this.x[i][0])&(mat[0][1] < this.x[i][1])) 
-                    & ((mat[1][0] > this.y[i][0])&(mat[1][0] < this.y[i][1])
-                    | (mat[1][1] > this.y[i][0])&(mat[1][1] < this.y[i][1]))){
+                    if (((mat[0][0] > this.x[i][0]) & (mat[0][0] < this.x[i][1])
+                        | (mat[0][1] > this.x[i][0]) & (mat[0][1] < this.x[i][1]))
+                        & ((mat[1][0] > this.y[i][0]) & (mat[1][0] < this.y[i][1])
+                            | (mat[1][1] > this.y[i][0]) & (mat[1][1] < this.y[i][1]))) {
 
                         bx = true;
                         by = true;
@@ -314,18 +264,23 @@ class OneStone extends CanvasElement {
 
 
                         description = "object"
-                        
+
                     }
                 }
-                
 
 
-            return [bx, by, description]
+
+                return [bx, by, description]
             }
-         }
+        }
 
 
         this._gravity_ = -1 / 2 * grv
+    }
+
+    setInitialSpeed(spd) {
+        this._speed_.x = spd[0]/10;
+        this._speed_.y = spd[1]/10;
     }
 
     parabola(t) {
@@ -333,14 +288,14 @@ class OneStone extends CanvasElement {
         //this._position_.x = this._position_.x0 + this._speed_.x * t
         //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
 
-        if (this._boings > 5){
+        if (this._boings > 5) {
             return
         }
 
         this._speed_.y += this._gravity_ * t
 
-        this._position_.x += this._speed_.x /500
-        this._position_.y += this._speed_.y /500
+        this._position_.x += this._speed_.x / 500
+        this._position_.y += this._speed_.y / 500
 
         let is_colided = this.colisioner.is_colision(this.colider())
 
@@ -359,32 +314,34 @@ class OneStone extends CanvasElement {
                 break;
 
         }
-        
+
 
 
 
     }
 
-    parabol(){
-
+    parabol(t, isOn) {
+        if (isOn) {
+            this.parabola(t)
+        }
     }
 
 }
 
 
-class Twobirds extends CanvasElement {
+export class Twobirds extends CanvasElement {
     constructor(canvas_id, id, pos) {
         super(canvas_id, null, pos);
-        this._id_ = id; 
+        this._id_ = id;
         this.texs = [];
 
         for (let i = 0; i < 6; i++) {
             this.texs.push(document.getElementById(this._id_ + i))
         }
-        
+
         this.__FRAMES__ = this.texs.length
 
-        
+
 
     }
 
@@ -392,7 +349,7 @@ class Twobirds extends CanvasElement {
         this.tex = this.texs[Math.trunc(x) % this.__FRAMES__]
         this.draw("image");
 
-       
+
     }
 
 

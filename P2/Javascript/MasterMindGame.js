@@ -1,10 +1,10 @@
 class Game{
     
 
-    constructor(alph){
+    constructor(alph, turns=10){
 
         this.ALPHABET = alph
-        this.MAXTURNS = 10
+        this.MAXTURNS = turns
         this.LEN = 4
         this.KEY = this._random_key()
 
