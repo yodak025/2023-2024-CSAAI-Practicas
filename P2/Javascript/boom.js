@@ -3,6 +3,8 @@
 var phase2 = false;
 var message = null
 
+let isPrompted = false;
+
 function init() {
 
     var alph = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -142,7 +144,8 @@ function init() {
 
 
 
-            }else if (!message) {
+            }else if (!message && !isPrompted) {
+
 
                 let message = ""; 
                 setTimeout(() => {
@@ -156,6 +159,8 @@ function init() {
                         dialog("Tu corazón no es puro. No hay nada para ti en esta página. Vete.");
                     }
                 }, 100);
+
+                isPrompted = true;
 
                 
             }
