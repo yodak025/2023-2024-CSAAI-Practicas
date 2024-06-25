@@ -19,8 +19,7 @@ body {
     border-color: black;
     border-radius: 5%;
     user-select: none;
-    display: grid;
-    justify-content: center;
+    
 }
 
 .display {

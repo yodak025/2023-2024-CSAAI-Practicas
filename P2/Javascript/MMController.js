@@ -210,7 +210,7 @@ class MasterMind {
                 if (all_el(this.game.key, -1)){
                     window.alert("¡Has ganado! ¡Felicidades!");
 
-                        window.alert("Puedes volver a jugar introduciendo en el prompt 'MasterMind' al principio de cada partida");
+                        window.alert("Puedes volver a jugar respondiendo 'MasterMind' al principio de cada partida, cuando te pregunte '¿Por qué sigues aquí?'.");
 
                 }
 
