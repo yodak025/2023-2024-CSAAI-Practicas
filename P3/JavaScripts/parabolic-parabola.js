@@ -1,6 +1,26 @@
 import { CanvasElement, OneStone, TimeScore, Twobirds } from "./parabolic-classes.js";
 
+
+
 let v_frame = 0;
+
+const isGameOver = {
+    win: false,
+    lose: false
+}
+
+console.log("Ejecutando JS...");
+
+const canvas = document.getElementById("canvas");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const drawingPad = document.getElementById("drawing-pad");
+drawingPad.width = window.innerWidth / 4;
+drawingPad.height = window.innerHeight / 2;
+
+const drawingLimits = [drawingPad.width, drawingPad.height];
 
 const drawingPadController = {
 
@@ -19,8 +39,8 @@ const drawingPadController = {
     //Podría despejar la pendiente de la ecuación de la recta y luego calcular el ángulo, 
     //pero el tiempo apremia y no tengo ganas de perderlo con asquerosas matemáticas. Mejor desarrollar el juego.
     getInitialSpeed: function(stone) {
-        const dx = this.x1 - this.x0;
-        const dy = this.y0 - this.y1;
+        const dx = (this.x1 - this.x0) / drawingLimits[0];
+        const dy = (this.y0 - this.y1) / drawingLimits[1];
         const strength = Math.sqrt(dx * dx + dy * dy);
         const theta = Math.atan2(dy, dx);
 
@@ -28,23 +48,7 @@ const drawingPadController = {
             [strength * Math.cos(theta), strength * Math.sin(theta)]
         );
     }
-
-
 }
-
-console.log("Ejecutando JS...");
-
-const canvas = document.getElementById("canvas");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const drawingPad = document.getElementById("drawing-pad");
-drawingPad.width = window.innerWidth / 4;
-drawingPad.height = window.innerHeight / 2;
-
-const drawingLimits = [drawingPad.width, drawingPad.height];
-
 
 drawingPad.addEventListener("mousedown", function (e) {
     if (drawingPadController.isDrawable && !drawingPadController.isDrawing) {
@@ -78,8 +82,24 @@ drawingPad.addEventListener("mousemove", function (e) {
     }
 });
 
+
 const screen = new CanvasElement("canvas", "Screen", [0.5, 0.525, 1.0, 0.95, 1.0, 0.95]);
 const stone = new OneStone("canvas", "Stone", [0.1, 0.1, 0.2, 0.2, 0.1, 0.1], 9.81);
+
+
+const easyInput = document.getElementById("easy");
+const hardInput = document.getElementById("hard");
+const insaneInput = document.getElementById("insane");
+
+if (easyInput.checked) {
+    stone.setDifficulty("easy");
+} else if (hardInput.checked) {
+    stone.setDifficulty("hard");
+} else if (insaneInput.checked) {
+    stone.setDifficulty("insane");
+} 
+
+
 
 drawingPad.addEventListener("mouseup", function (e) {
     if (drawingPadController.isDrawable & drawingPadController.isDrawing) {
@@ -91,21 +111,56 @@ drawingPad.addEventListener("mouseup", function (e) {
     }
 });
 
-const timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2, 0.4, 0.2]);
-const blue_bird = new Twobirds("canvas", "BlueBird", [0.5, 0.5, 0.15, 0.15, 0.05 / 2, 0.10]);
-const green_bird = new Twobirds("canvas", "GreenBird", [0.7, 0.4, 0.15, 0.15, 0.05 / 2, 0.10]);
+function generateBirdPosition(){
 
+    const minX = 1 / 4; 
+    const maxX = 1 - (1 / 8); 
+    const minY = 1 / 8; 
+    const maxY = 1 - (1 / 8); 
+
+    let x = Math.random() * (maxX - minX) + minX;
+    let y = Math.random() * (maxY - minY) + minY;
+
+    return [x, y];
+}
+
+function generateBird2Position(firstPosition){
+
+    const secondPosition = generateBirdPosition();
+    const dx = secondPosition[0] - firstPosition[0];
+    const dy = secondPosition[1] - firstPosition[1];
+    if (Math.abs(dx) > 1/6 || Math.abs(dy) > 1/6){
+        generateBird2Position(firstPosition)
+    }
+    return secondPosition;
+}
+
+const blueBirdPosition = generateBirdPosition();
+const greenBirdPosition = generateBird2Position(blueBirdPosition);
+
+const timer = new TimeScore("canvas", "TimeScore", [0.95, 0.85, 0.4, 0.2, 0.4, 0.2]);
+const blue_bird = new Twobirds("canvas", "BlueBird", [blueBirdPosition[0], blueBirdPosition[1], 0.15, 0.15, 0.05 / 2, 0.10]);
+const green_bird = new Twobirds("canvas", "GreenBird", [greenBirdPosition[0], greenBirdPosition[1], 0.15, 0.15, 0.05 / 2, 0.10]);
+
+stone.colisioner.addTimeScore(timer)
 stone.colisioner.add0(screen.colider())
 stone.colisioner.add(blue_bird.colider())
 stone.colisioner.add(green_bird.colider())
 
+const tutorialDisplay = document.getElementById("tutorial-shade");
+const tutorialCloseBotton = document.getElementById("tutorial-close");
 
+tutorialCloseBotton.addEventListener("click", function () {
+    window.requestAnimationFrame(step);
+    tutorialDisplay.style.display = "none";
 
+    let music = new Audio("BirdsonaWire.mp3");
+    music.currentTime = 0;
+    music.play();
+    
+});
 
-window.requestAnimationFrame(step);
-
-
-
+ 
 
 function step(i) {
 
@@ -113,14 +168,55 @@ function step(i) {
 
     screen.clear()
 
-    //console.log(stone.colisioner.is_colision(stone.colider()))
     timer.setTime()
     stone.parabol(v_frame / 1000, !drawingPadController.isDrawable)
     stone.draw("image")
     blue_bird.animate_bird(v_frame / 8)
     green_bird.animate_bird(v_frame / 6)
-    window.requestAnimationFrame(step);
+
+    if (blue_bird.is_dead && green_bird.is_dead) {
+        console.log("Ganaste")
+        location.reload()
+            
+    } else if (stone.isStopped) {
+        console.log("Perdiste")  
+        location.reload()
+    }else{
+
+        window.requestAnimationFrame(step);
+    }
 
 }
+
+// Funciones que despliegan el menú de reset. Funcionan, pero no dentro de step.
+
+const gameOverDisplay = document.getElementById("game-over-shade");
+const gameOverWinMsg = document.getElementById("game-over-win-msg");
+const gameOverLoseMsg = document.getElementById("game-over-lose-msg");
+const gameOverReloadBotton = document.getElementById("game-over-close");
+
+function win(){
+    gameOverDisplay.classList.remove("hidden")
+    gameOverDisplay.classList.add("show")
+
+    gameOverLoseMsg.classList.remove("show")
+    gameOverLoseMsg.classList.add("hidden")
+
+    gameOverWinMsg.classList.remove("hidden")
+    gameOverWinMsg.classList.add("show")
+    console.log("Ganaste")
+}
+
+function lose (){
+    gameOverDisplay.classList.remove("hidden")
+    gameOverDisplay.classList.add("show")
+
+    gameOverLoseMsg.classList.remove("hidden")
+    gameOverLoseMsg.classList.add("show")
+
+    gameOverWinMsg.classList.remove("show")
+    gameOverWinMsg.classList.add("hidden")
+    console.log("Perdiste")
+}   
 
 

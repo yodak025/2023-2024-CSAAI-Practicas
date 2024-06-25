@@ -16,35 +16,36 @@
 <body onload="init()">
     <h1>BOOM!</h1>
     <button id="MMButton" onclick="location.href='MasterMind.html'">MasterMind</button>
-    <div class="canvas">
+    <main class="canvas">
+        <section class="display">
 
-        <div class="display">
+            <section class="key display">
 
-            <div class="key">
                 <div id="d0" class="digit">
                     *
                 </div>
                 <div id="d1" class="digit">
                     *
-
                 </div>
                 <div id="d2" class="digit">
                     *
-
                 </div>
                 <div id="d3" class="digit">
                     *
-
                 </div>
+                
+            </section>
 
-            </div>
-            <div class="chrono">
-                <p>0:0:0</p>
+            <section class="chrono">
+                <p id="chrono-content">0:0:0</p>
+            </section>
 
-            </div>
-        </div>
-        <div class="buttons">
-            <div id="first_row" class="row">
+        </section>
+
+        <nav class="buttons">
+
+            <section id="first_row" class="row">
+                
                 <div id="1" class="button">
                     <h1>1</h1>
                 </div>
@@ -54,8 +55,11 @@
                 <div id="3" class="button">
                     <h1>3</h1>
                 </div>
-            </div>
-            <div id="second_row" class="row">
+
+            </section>
+
+            <section id="second_row" class="row">
+
                 <div id="4" class="button">
                     <h1>4</h1>
                 </div>
@@ -65,8 +69,11 @@
                 <div id="6" class="button">
                     <h1>6</h1>
                 </div>
-            </div>
-            <div id="third_row" class="row">
+
+            </section>
+
+            <section id="third_row" class="row">
+
                 <div id="7" class="button">
                     <h1>7</h1>
                 </div>
@@ -76,13 +83,19 @@
                 <div id="9" class="button">
                     <h1>9</h1>
                 </div>
-            </div>
-            <div id="fourth_row" class="row">
+
+            </section>
+
+            <section id="fourth_row" class="row">
+
                 <div id="0" class="button">
                     <h1>0</h1>
                 </div>
-            </div>
-            <div id="fifth_row" class="row">
+
+            </section>
+
+            <section id="fifth_row" class="row">
+
                 <div id="Start" class="button">
                     <h3>Start</h3>
                 </div>
@@ -92,10 +105,11 @@
                 <div id="Reset" class="button">
                     <h3>Reset</h3>
                 </div>
-            </div>
 
-        </div>
-    </div>
+            </section>
+
+        </nav>
+    </main>
 
 </body>
 

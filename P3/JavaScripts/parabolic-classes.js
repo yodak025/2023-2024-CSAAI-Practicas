@@ -162,18 +162,14 @@ export class TimeScore extends CanvasElement {
     constructor(canvas_id, id = null, pos = [0.5, 0.5, 0, 0]) {
         super(canvas_id, id, pos);
         this._time_ = new Crono()
-        this._score_ = 100;
+        this._score_ = 0;
     }
 
     setTime() {
-
-
         this._time_.start()
 
         this._ctx_.font = "23px Arial";
         this._ctx_.fillStyle = 'black'
-
-
 
         this._ctx_.fillText(String(this._score_) + "    " + this._time_.disp,
             this._reaxe_([this._position_.x, this._size_.width], "x", "lb_corner"),
@@ -181,8 +177,10 @@ export class TimeScore extends CanvasElement {
         );
 
         this._ctx_.fillStyle = 'blue';
+    }
 
-
+    increaseScore() {
+        this._score_ += 100
     }
 }
 
@@ -199,11 +197,14 @@ export class OneStone extends CanvasElement {
             cx: pos[4],
             cy: pos[5]
         }
+
         this._speed_ = {
             x: 0,
             y: 0,
 
         }
+
+        this._MAX_BOINGS_ = 0;
 
         this._boings = 0
 
@@ -217,24 +218,30 @@ export class OneStone extends CanvasElement {
             y0: [],
             objs0: [],
 
+            timeScore: null,
+
             len: 0,
 
-            add: function (mat) {
-                this.x.push(mat[0])
-                this.y.push(mat[1])
-                this.objs.push(mat[2])
-                this.len += 1
-            },
-
-            add0: function (mat) {
-                this.x0.push(mat[0])
-                this.y0.push(mat[1])
-                this.objs0.push(mat[2])
+            addTimeScore: function (ts) {
+                this.timeScore = ts;
             },
 
             clear: function () {
-                this.x = []
-                this.y = []
+                this.x = [];
+                this.y = [];
+            },
+
+            add: function (mat) {
+                this.x.push(mat[0]);
+                this.y.push(mat[1]);
+                this.objs.push(mat[2]);
+                this.len += 1;
+            },
+
+            add0: function (mat) {
+                this.x0.push(mat[0]);
+                this.y0.push(mat[1]);
+                this.objs0.push(mat[2]);
             },
 
             is_colision: function (mat) {
@@ -244,11 +251,11 @@ export class OneStone extends CanvasElement {
 
                 if ((mat[0][0] < this.x0[0][0]) || (mat[0][1] > this.x0[0][1]))
                     bx = true;
-                description = "edges"
+                description = "edges";
 
                 if ((mat[1][0] < this.y0[0][0]) || (mat[1][1] > this.y0[0][1]))
                     by = true;
-                description = "edges"
+                description = "edges";
 
                 for (let i = 0; i < this.len; i++) {
 
@@ -259,12 +266,12 @@ export class OneStone extends CanvasElement {
 
                         bx = true;
                         by = true;
+                        if (!this.objs[i].is_dead)
+                            this.timeScore.increaseScore();
 
                         this.objs[i].is_dead = true;
-
-
-                        description = "object"
-
+                        description = "object";
+                        
                     }
                 }
 
@@ -276,19 +283,34 @@ export class OneStone extends CanvasElement {
 
 
         this._gravity_ = -1 / 2 * grv
+
+        this.isStopped = false 
+    }
+
+    setDifficulty(diff) {
+        switch (diff) {
+            case "easy":
+                this._MAX_BOINGS_ = 15;
+                break;
+            case "hard":
+                this._MAX_BOINGS_ = 5;
+                break;
+            case "insane":
+                this._MAX_BOINGS_ = 1;
+                break;
+        }
+
     }
 
     setInitialSpeed(spd) {
-        this._speed_.x = spd[0]/10;
-        this._speed_.y = spd[1]/10;
+        this._speed_.x = 20 * spd[0];
+        this._speed_.y = 42.9 * spd[1];
     }
 
     parabola(t) {
 
-        //this._position_.x = this._position_.x0 + this._speed_.x * t
-        //this._position_.y = this._position_.y0 + this._speed_.y * t + this._gravity_ * t * t
-
-        if (this._boings > 5) {
+        if (this._boings > this._MAX_BOINGS_) {
+            this.isStopped = true;
             return
         }
 
@@ -314,10 +336,6 @@ export class OneStone extends CanvasElement {
                 break;
 
         }
-
-
-
-
     }
 
     parabol(t, isOn) {
@@ -338,18 +356,13 @@ export class Twobirds extends CanvasElement {
         for (let i = 0; i < 6; i++) {
             this.texs.push(document.getElementById(this._id_ + i))
         }
-
         this.__FRAMES__ = this.texs.length
-
-
 
     }
 
     animate_bird(x) {
         this.tex = this.texs[Math.trunc(x) % this.__FRAMES__]
         this.draw("image");
-
-
     }
 
 

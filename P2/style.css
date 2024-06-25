@@ -13,12 +13,11 @@ body {
     border: solid;
     border-color: black;
     border-radius: 5%;
+    user-select: none;
 }
 
-
-
 .display {
-    background-color: #029f63;
+    background-color: #d8d8d8;
     border: solid;
     border-color: rgb(0, 0, 0);
 }
@@ -33,29 +32,29 @@ body {
     
 }
 
-
-
-
-
-
 .row {
-    background-color: rgb(27, 27, 27);
+    background-color: #c0c0c0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
 }
 
+
 .button {
-    background-color: rgb(57, 71, 255);
+    background-color: #202020;
     
-    border: solid;
+    border-style: outset;
     border-color: rgb(0, 0, 0);
 
     width: 30%;
     float: left;
     text-align: center;
 
+    cursor: pointer;
+
+}.button.pressed{
+    border-style: inset;
 }
 
 .digit{
@@ -74,6 +73,7 @@ body {
     flex-wrap: wrap;
     border:solid;
     margin: 10%;
+    padding: 2%;
     justify-content: center;
 }
 
@@ -82,7 +82,7 @@ body {
 }
 
 .demimatch{
- color: yellow;
+    color: yellow;
 }
 
 .mistake{
@@ -97,13 +97,17 @@ body {
 
 
 #fifth_row {
-    border-bottom-left-radius: 8%;
-    border-bottom-right-radius: 8%;
 }
 
 #MMButton {
     display: none;
 }
+
+#chrono {
+    margin: 0;
+    padding: 0;
+}
+
 
 
 @media screen and (max-width: 768px) {

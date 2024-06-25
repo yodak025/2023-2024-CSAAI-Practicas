@@ -28,21 +28,30 @@ function init() {
 
     window.alert('¡Bienvenido! Por desgracia, la pagina está vacía... Lo lamento. Así que márchate, ¿vale?')
 
-    start.onclick = () => {
+    start.onmousedown = () => {
         chrono.start();
         if (!started) {
             started = true;
         }
+        start.classList.add("pressed");
     }
 
-    stop.onclick = () => {
+    start.onmouseup = () => {
+        start.classList.remove("pressed");
+    }
+
+    stop.onmousedown = () => {
         chrono.stop();
         if (started) {
             started = false;
         }
+        stop.classList.add("pressed");
+    }
+    stop.onmouseup = () => {
+        stop.classList.remove("pressed");
     }
 
-    reset.onclick = () => {
+    reset.onmousedown = () => {
         chrono.stop();
 
         chrono.reset();
@@ -56,7 +65,10 @@ function init() {
             displays[n].classList.remove("demimatch");
         }
         started = false;
-
+        reset.classList.add("pressed");
+    }
+    reset.onmouseup = () => {
+        reset.classList.remove("pressed");
     }
 
 
@@ -65,7 +77,8 @@ function init() {
     for (let i = 0; i < 10; i++) {
 
         buttons[i] = document.getElementById(String(i));;
-        buttons[i].onclick = () => {
+        buttons[i].onmousedown = () => {
+            buttons[i].classList.add("pressed");
 
             if (started) {
                 let pointer = false
@@ -130,6 +143,9 @@ function init() {
                     let btn = document.getElementById("MMButton")
                     btn.style.display = "inline"  
             }}*/
+        }
+        buttons[i].onmouseup = () => {
+            buttons[i].classList.remove("pressed");
         }
 
     }
