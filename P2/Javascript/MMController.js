@@ -238,7 +238,18 @@ class MasterMind {
 
 
 }
+
 function initMM() {
+    setTimeout(() => {
+        window.alert("¡Bienvenido a MasterMind!" + 
+            "\n\nEl objetivo del juego es adivinar la combinación de colores que el ordenador ha elegido." +
+            "\n\nElige una combinación de colores y yo te diré si has acertado o no siguiendo este código:" +
+            "\n\n 🔴 -> acierto." + 
+            "\n\n ⚪ -> el color se encuentra en una posición diferente." + 
+            "\n\n ⚫ -> el color no se encuentra en la clave secreta." + 
+            "\n\n Me encanta jugar MasterMind, ese es mi secreto." + 
+            "\n\n¡Espero que lo disfrutes!");
+        }, 1000);
 
     MM = new MasterMind("Canvas");
 

@@ -1,12 +1,17 @@
 
+@font-face {
+    font-family: Jersey;
+    src: url(./Jersey10-Regular.ttf);
+}
+
 body {
     background-color: #7c7c7c;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: Jersey;
 }
 
 
 .canvas {
-    background-color: #303030;
+    background-color: #181818;
     width: 25%;
     margin: 0% auto;
     padding: 1.5%;
@@ -14,26 +19,38 @@ body {
     border-color: black;
     border-radius: 5%;
     user-select: none;
+    display: grid;
+    justify-content: center;
 }
 
 .display {
-    background-color: #d8d8d8;
+    margin:5px;
+    border-radius: 3%;
+    background-color: #345844;
     border: solid;
     border-color: rgb(0, 0, 0);
+    font-size: 30px;
 }
 
 .key {
-    border: double;
+    border: none;
     display: flex;
     flex-wrap: wrap;
     margin: 1%;
     padding: auto;
-    justify-content: center;
-    
+    justify-content: center;    
+}
+
+.buttons{
+    background-color: #575757;
+    margin: 0% ;
+    padding: 0%;
 }
 
 .row {
-    background-color: #c0c0c0;
+    padding: 0%;
+    margin: 0%;
+    
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -42,14 +59,20 @@ body {
 
 
 .button {
-    background-color: #202020;
+    background-color: #414141;
     
+    border-radius: 20%;
     border-style: outset;
     border-color: rgb(0, 0, 0);
+    border-width: 3px;
 
-    width: 30%;
+    width: 25%;
     float: left;
     text-align: center;
+
+    margin: 1.5%;
+    
+    font-size: 17px;
 
     cursor: pointer;
 
@@ -73,31 +96,31 @@ body {
     flex-wrap: wrap;
     border:solid;
     margin: 10%;
-    padding: 2%;
+    padding: 0%;
     justify-content: center;
 }
 
 .match{
     color: green;
+    transition: 0.2s;
 }
 
 .demimatch{
     color: yellow;
+    transition: 0.2s;
 }
 
 .mistake{
     color: red;
+    transition: 0.2s;
 }
 
 .selected{
     filter: brightness(100);
-    background-color: rgba(151, 151, 151, 0.2)
+    background-color: rgba(151, 151, 151, 0.2);
+    transition: 0.5s;
 }
 
-
-
-#fifth_row {
-}
 
 #MMButton {
     display: none;
@@ -108,7 +131,13 @@ body {
     padding: 0;
 }
 
-
+.colors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+}
 
 @media screen and (max-width: 768px) {
    .canvas{

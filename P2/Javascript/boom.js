@@ -10,6 +10,8 @@ function init() {
     var boom = new Game(alph, turns=Infinity)
     var chrono = new Crono(document.getElementsByClassName("chrono")[0]);
 
+    chrono.reset();
+
     var started = false;
 
     var buttons = []
@@ -25,13 +27,21 @@ function init() {
     var stop = document.getElementById("Stop");
     var reset = document.getElementById("Reset");
 
+    function dialog(text) {
+        setTimeout(() => {
+            window.alert(text)
+        }, 200);
+    }
+    dialog('¡Bienvenido! Por desgracia, la pagina está vacía... Lo lamento. Así que márchate, ¿vale?')
+    
 
-    window.alert('¡Bienvenido! Por desgracia, la pagina está vacía... Lo lamento. Así que márchate, ¿vale?')
 
     start.onmousedown = () => {
         chrono.start();
         if (!started) {
             started = true;
+            dialog("¡Para! ¿Que crees que haces? No te voy a explicar como se juega.");
+            dialog("Yo que tú me iría... No me gustaría que te pasase nada malo...");
         }
         start.classList.add("pressed");
     }
@@ -55,7 +65,7 @@ function init() {
         chrono.stop();
 
         chrono.reset();
-        boom = new Game(alph)
+        boom = new Game(alph, turns=Infinity)
         document.getElementsByClassName("selected")[0].classList.remove("selected");
         displays[0].classList.add("selected");
         for (let n = 0; n < 4; n++) {
@@ -102,18 +112,19 @@ function init() {
                 if (allElementsAre(boom.key, -1)) {
 
                     if (phase2) {
-                        window.alert("Vaya, has ganado de nuevo... De acuerdo, te enseñaré mi secreto.");
+                        chrono.stop();
+                        dialog("Vaya, has ganado de nuevo... De acuerdo, te enseñaré mi secreto.");
                         let btn = document.getElementById("MMButton")
                         btn.style.display = "inline"
 
                     } else {
                         phase2 = true;
-                        window.alert("Vaya, has ganado... Supongo que no me queda alternativa...");
-
                         chrono.stop();
+                        dialog("Vaya, has ganado... Supongo que no me queda alternativa...");
+                        dialog("TE DESTRUIRÉ!!!")
                         chrono.invert();
 
-                        boom = new Game(alph);
+                        boom = new Game(alph, turns=Infinity);
 
                         document.getElementsByClassName("selected")[0].classList.remove("selected");
                         displays[0].classList.add("selected");
@@ -127,22 +138,27 @@ function init() {
                     }
 
                     
-                } else if (boom.curr_el === 1 && boom.MAXTURNS - boom.turns === 0 && !phase2) {
-                    window.alert("¡Para! ¿Que crees que haces? Esto no funciona. Vete de aquí por favor.");
                 }
 
 
 
-            }/* else if (!message) {
+            }else if (!message) {
 
-                message = window.prompt("¡¿Lo ves?! La página está rota. ¿Por qué sigues aquí?");
+                let message = ""; 
+                setTimeout(() => {
+                    message = window.prompt("¡¿Lo ves?! La página está rota. ¿Por qué sigues aquí?");
+                    if (message == "MasterMind") {
+                        dialog("...");
+                        dialog("Pe.. Pero, ¿cómo lo has sabido?");
+                        let btn = document.getElementById("MMButton")
+                        btn.style.display = "inline"  
+                    }else{
+                        dialog("Tu corazón no es puro. No hay nada para ti en esta página. Vete.");
+                    }
+                }, 100);
 
-                if (message == "MasterMind") {
-                    window.alert("...");
-                    window.alert("Pe.. Pero, ¿cómo lo supiste?");
-                    let btn = document.getElementById("MMButton")
-                    btn.style.display = "inline"  
-            }}*/
+                
+            }
         }
         buttons[i].onmouseup = () => {
             buttons[i].classList.remove("pressed");

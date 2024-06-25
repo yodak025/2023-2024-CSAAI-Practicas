@@ -9,21 +9,30 @@
 <body onload="initMM()">
 
     <h1>Master Mind Game</h1>
-    <div class="canvas"><canvas id="Canvas" width="300" height="450"></canvas>
-    <div>
-        <button id="red">🔴</button>
-        <button id="green">🟢</button>
-        <button id="yellow">🟡</button>
-        <button id="blue">🔵</button>
-        <button id="black">⚫</button>
-        <button id="white">⚪</button>
+    <main style="display: flex;">
+        <div class="canvas"><canvas id="Canvas" width="300" height="450"></canvas>
+            <div class="colors">
+                <button id="red">🔴</button>
+                <button id="green">🟢</button>
+                <button id="yellow">🟡</button>
+                <button id="blue">🔵</button>
+                <button id="black">⚫</button>
+                <button id="white">⚪</button>
+        
+            </div>
+            </div>
+            <section>
+                <h5>🔴 -> acierto.</h5>
+                <h5>⚪ -> el color se encuentra en una posición diferente.</h5>
+                <h5>⚫ -> el color no se encuentra en la clave secreta.</h5>
+                <h5>Si ya has acertado un color, mantendré el acierto aunque luego te equivoques.</h5>
+            </section>
+            
+    </main>
+    
 
-    </div></div>
 
-    <h4>Esto es una chapuza provisional.</h4>
-    <h5>🔴 -> acierto.</h5>
-    <h5>⚪ -> el color se encuentra en una posición diferente.</h5>
-    <h5>⚫ -> el color no se encuentra en la clave secreta.</h5>
+    
     
     
 </body>

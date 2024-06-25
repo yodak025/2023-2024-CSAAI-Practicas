@@ -85,8 +85,8 @@ class Crono {
 
     invert() {
         if (!this.timer) {
-            if (this.min < 3) {
-                this.min = 3
+            if (this.min < 1) {
+                this.min = 1
                 this.seg = 0
                 this.cent = 0
             }
